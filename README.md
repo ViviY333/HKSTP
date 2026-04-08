@@ -39,8 +39,17 @@ python3 -m http.server 8765 --bind 127.0.0.1
 
 ## 首次部署 GitHub Pages
 
-1. 将本仓库 `main` 推送到 GitHub。  
-2. 打开 **Settings → Pages**。  
-3. **Build and deployment** → Source 选 **Deploy from a branch**。  
-4. Branch 选 **`main`**，文件夹选 **`/ (root)`**，保存。  
-5. 等待 1～2 分钟后访问 `https://viviy333.github.io/HKSTP/`（若自定义了域名以设置页为准）。
+先推送本仓库到 GitHub，再任选一种方式：
+
+### 方式 A：从分支发布（最简单）
+
+1. **Settings → Pages**。  
+2. **Build and deployment** → Source：**Deploy from a branch**。  
+3. Branch：**`main`**，文件夹：**`/ (root)`**，保存。  
+4. 约 1～2 分钟后访问：<https://viviy333.github.io/HKSTP/>
+
+### 方式 B：GitHub Actions（已含工作流）
+
+1. **Settings → Pages**。  
+2. Source 选 **GitHub Actions**。  
+3. 保存后，对 `main` 的每次 push 会由 `.github/workflows/pages.yml` 自动部署（也可在 **Actions** 里手动 **Run workflow**）。
