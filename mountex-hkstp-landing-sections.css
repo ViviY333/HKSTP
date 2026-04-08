@@ -1,0 +1,492 @@
+/* —— Sections, programme cards, steps, footer —— */
+
+.section {
+  padding: 56px clamp(20px, 5vw, 48px) 80px;
+  max-width: calc(var(--max) + 250px);
+  margin: 0 auto;
+}
+
+.section h2 {
+  margin: 0 0 12px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: clamp(26px, 4vw, 35.2px);
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  color: var(--navy);
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  font-size: 10.88px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+.lede {
+  margin: 0 0 40px;
+  max-width: 560px;
+  font-size: 15.2px;
+  line-height: 1.6;
+  color: var(--slate);
+}
+
+.programme-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1100px) {
+  .programme-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .programme-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.prog-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.prog-card:hover {
+  box-shadow: var(--shadow-card);
+  transform: translateY(-2px);
+}
+
+.prog-card__head {
+  padding: 28px 28px 0;
+}
+
+.prog-card__title {
+  margin: 0 0 2px;
+  font-size: 16.8px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.prog-card__title--accent {
+  color: var(--orange-soft);
+}
+
+.prog-card__subtitle {
+  margin: 0;
+  font-size: 11.52px;
+  font-weight: 500;
+  color: var(--slate);
+}
+
+.prog-card__body {
+  padding: 16px 28px 0;
+  flex: 1;
+}
+
+.prog-card__desc {
+  margin: 0 0 14px;
+  font-size: 13.44px;
+  line-height: 1.35;
+  color: var(--slate-dark);
+}
+
+.prog-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+}
+
+.prog-metric--wide {
+  grid-column: 1 / -1;
+}
+
+.prog-metric {
+  background: var(--tile);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+.prog-metric__label {
+  margin: 0 0 2px;
+  font-size: 9.92px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.prog-metric__value {
+  margin: 0;
+  font-size: 14.08px;
+  font-weight: 700;
+}
+
+.prog-metric__value--accent {
+  color: var(--orange-soft);
+}
+
+.prog-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding: 14px 28px;
+  background: var(--tile);
+  border-top: 1px solid #e2e8f0;
+  min-height: 60px;
+}
+
+.prog-card__req {
+  margin: 0;
+  font-size: 11.52px;
+  font-weight: 500;
+  color: var(--slate);
+}
+
+.section--how {
+  padding-top: 80px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 1000px) {
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .steps {
+    grid-template-columns: 1fr;
+  }
+}
+
+.step-card {
+  padding: 22px;
+  background: #fff;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.step-card:last-child {
+  border-right: none;
+}
+
+@media (min-width: 1001px) {
+  .step-card {
+    border-bottom: none;
+  }
+}
+
+.step-card__icon {
+  font-size: 32px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.step-card__kicker {
+  margin: 0 0 8px;
+  font-size: 11.2px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.step-card h3 {
+  margin: 0 0 8px;
+  font-size: 15.2px;
+  font-weight: 700;
+}
+
+.step-card p {
+  margin: 0;
+  font-size: 13.12px;
+  line-height: 1.6;
+  color: var(--slate);
+}
+
+.footer {
+  position: relative;
+  z-index: 1;
+  background: #000;
+  color: #fff;
+  padding: 48px clamp(20px, 5vw, 48px) 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  min-height: 420px;
+}
+
+/* Figma 底部装饰：橙弧光 + 像素网格（置于内容背后） */
+.footer__deco {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.footer__deco-arc {
+  position: absolute;
+  left: 50%;
+  bottom: -18%;
+  transform: translateX(-50%);
+  width: min(1705px, 220%);
+  max-width: none;
+  height: auto;
+  opacity: 0.95;
+  mix-blend-mode: screen;
+}
+
+.footer__deco-mesh-mask {
+  position: absolute;
+  left: 50%;
+  bottom: -8%;
+  transform: translateX(-50%);
+  width: min(900px, 160%);
+  aspect-ratio: 763 / 772;
+  max-height: 55%;
+  -webkit-mask-image: url("https://www.figma.com/api/mcp/asset/78c367a7-38cc-4baa-8592-d7ca9fd40a02");
+  mask-image: url("https://www.figma.com/api/mcp/asset/78c367a7-38cc-4baa-8592-d7ca9fd40a02");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center bottom;
+  mask-position: center bottom;
+}
+
+.footer__deco-mesh {
+  position: absolute;
+  inset: -35% -12%;
+  width: 140%;
+  height: 140%;
+  object-fit: cover;
+  opacity: 0.88;
+  mix-blend-mode: screen;
+}
+
+.footer__glow {
+  position: absolute;
+  left: 50%;
+  bottom: -120px;
+  transform: translateX(-50%);
+  width: min(900px, 200%);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.footer__glow-img {
+  width: 100%;
+  height: auto;
+  mix-blend-mode: screen;
+}
+
+.footer__main {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.8fr repeat(3, 1fr);
+  gap: 40px;
+  max-width: var(--max);
+  margin: 0 auto 48px;
+}
+
+@media (max-width: 900px) {
+  .footer__main {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .footer__main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer__brand p {
+  margin: 12px 0 0;
+  max-width: 430px;
+  font-size: 13.12px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.logo--footer .logo__mark {
+  width: 118px;
+  height: 41px;
+}
+
+.footer__col h4 {
+  margin: 0 0 16px;
+  font-size: 10.88px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.footer__col a {
+  display: block;
+  padding: 4px 0;
+  font-size: 13.12px;
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 0.15s;
+}
+
+.footer__col a:hover {
+  color: #fff;
+}
+
+.footer__bottom {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 11.52px;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.footer__bottom p {
+  margin: 0;
+}
+
+/* —— Copilot：语音监听条（点击麦克风） —— */
+.copilot-card__composer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.voice-listening-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(180, 72, 98, 0.45);
+  background: linear-gradient(180deg, #0f1f3a 0%, #0a1628 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.voice-listening-bar[hidden] {
+  display: none !important;
+}
+
+.voice-listening-bar__dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e11d48;
+  box-shadow: 0 0 10px rgba(225, 29, 72, 0.65);
+  animation: voice-dot-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes voice-dot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(0.92);
+  }
+}
+
+.voice-listening-bar__label {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(248, 250, 252, 0.92);
+  letter-spacing: 0.02em;
+}
+
+.voice-listening-bar__waves {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.voice-listening-bar__waves span {
+  width: 3px;
+  border-radius: 2px;
+  background: #f43f5e;
+  transform-origin: bottom center;
+  animation: voice-wave 0.9s ease-in-out infinite;
+}
+
+.voice-listening-bar__waves span:nth-child(1) {
+  height: 10px;
+  animation-delay: 0s;
+}
+
+.voice-listening-bar__waves span:nth-child(2) {
+  height: 16px;
+  animation-delay: 0.12s;
+}
+
+.voice-listening-bar__waves span:nth-child(3) {
+  height: 8px;
+  animation-delay: 0.24s;
+}
+
+.voice-listening-bar__waves span:nth-child(4) {
+  height: 14px;
+  animation-delay: 0.36s;
+}
+
+.voice-listening-bar__waves span:nth-child(5) {
+  height: 11px;
+  animation-delay: 0.48s;
+}
+
+@keyframes voice-wave {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.btn--mic.is-listening {
+  box-shadow:
+    inset 0 0 16px rgba(255, 255, 255, 0.5),
+    0 0 0 2px rgba(225, 29, 72, 0.55);
+}

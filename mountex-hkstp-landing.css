@@ -1,0 +1,568 @@
+:root {
+  --orange: #fd6d0e;
+  --orange-soft: #ff9148;
+  --orange-pill: rgba(253, 109, 14, 0.12);
+  --navy: #1e293b;
+  --navy-deep: #0a1628;
+  --slate: #64748b;
+  --slate-dark: #475569;
+  --border: #ededed;
+  --tile: #f0f4f8;
+  --blue-bubble: rgba(3, 92, 225, 0.06);
+  --blue-label: #056ee1;
+  --font-display: "Outfit", system-ui, sans-serif;
+  --font-ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --max: 1200px;
+  --radius-pill: 999px;
+  --radius-card: 12px;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-copilot: 0 0.97px 0.97px 0.49px rgba(68, 25, 6, 0.04),
+    0 2.92px 2.92px 1.46px rgba(68, 25, 6, 0.04),
+    0 5.83px 5.83px -2.92px rgba(68, 25, 6, 0.04),
+    0 11.67px 11.67px -5.83px rgba(68, 25, 6, 0.04),
+    0 23.33px 23.33px -11.67px rgba(68, 25, 6, 0.04);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-display);
+  color: var(--navy);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.page {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* 叠在固定 hero 动画之上；不设底色，programmes / how 区块透出背景 */
+main {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+/* —— Hero —— */
+.hero {
+  position: relative;
+  min-height: min(901px, 100vh);
+  padding: 15px clamp(16px, 4vw, 48px) 48px;
+  box-shadow: inset 0 0 0 2px #fd6d0e;
+}
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #f0f6ff;
+}
+
+/* 与文档流分离：动画铺满视口且不随滚动移动 */
+.hero__bg--unicorn {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: #fff;
+  pointer-events: none;
+}
+
+.hero__unicorn-host {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  pointer-events: none;
+}
+
+.hero__bg-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 68% 72% at 50% 46%,
+    rgba(255, 255, 255, 0.97) 0%,
+    rgba(255, 255, 255, 0.72) 38%,
+    rgba(255, 255, 255, 0.2) 62%,
+    transparent 78%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__unicorn-host {
+    display: none;
+  }
+
+  .hero__bg--unicorn {
+    background:
+      radial-gradient(ellipse 90% 70% at 15% 25%, rgba(255, 143, 76, 0.35), transparent 55%),
+      radial-gradient(ellipse 75% 55% at 85% 15%, rgba(5, 110, 225, 0.22), transparent 50%),
+      linear-gradient(165deg, #fff8f2 0%, #eef6ff 45%, #ffffff 100%);
+  }
+}
+
+.header-bar,
+.copilot-wrap,
+.hero__social {
+  position: relative;
+  z-index: 2;
+}
+
+.header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  max-width: 1420px;
+  margin: 0 auto;
+}
+
+.header-bar__nav-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.header-bar__pill {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px 8px 6px 148px;
+  min-height: 48px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-pill);
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .header-bar__pill {
+    padding-left: 12px;
+    padding-top: 52px;
+  }
+}
+
+.nav-link {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 14px;
+  color: #6d6d6d;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--navy);
+}
+
+.nav-link--has-chevron {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-right: 12px;
+}
+
+.chevron {
+  opacity: 0.7;
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 200px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  z-index: 20;
+}
+
+.nav-dropdown__panel a {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--slate);
+}
+
+.nav-dropdown__panel a:hover {
+  background: var(--tile);
+  color: var(--navy);
+}
+
+.logo {
+  display: block;
+}
+
+.logo--header {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 118px;
+  height: 41px;
+}
+
+@media (max-width: 900px) {
+  .logo--header {
+    left: 50%;
+    top: 8px;
+    transform: translateX(-50%);
+  }
+}
+
+.logo__mark {
+  position: relative;
+  display: block;
+  width: 118px;
+  height: 41px;
+}
+
+.logo__mark > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.logo__icon {
+  z-index: 1;
+}
+
+.btn {
+  position: relative;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn--primary {
+  color: #fff;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-family: var(--font-ui);
+  font-weight: 400;
+  background: linear-gradient(180deg, rgba(255, 143, 76, 0.95), rgba(242, 93, 4, 0.95));
+  border: 1px solid #fff;
+  box-shadow: inset 0 0 16px rgba(255, 255, 255, 0.5);
+}
+
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  filter: brightness(1.05);
+}
+
+.btn--header {
+  flex-shrink: 0;
+}
+
+.btn--send {
+  width: 39px;
+  height: 38px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.btn--icon {
+  width: 39px;
+  height: 38px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #fff;
+  background: linear-gradient(180deg, rgba(255, 143, 76, 0.95), rgba(242, 93, 4, 0.95));
+  box-shadow: inset 0 0 16px rgba(255, 255, 255, 0.5);
+}
+
+.btn--mic {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.btn--dark {
+  background: var(--navy-deep);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 12.16px;
+  font-weight: 600;
+}
+
+.btn--dark:hover {
+  filter: brightness(1.08);
+}
+
+.btn--muted {
+  background: var(--slate);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 12.16px;
+  font-weight: 600;
+  min-width: 121px;
+}
+
+/* Copilot */
+.copilot-wrap {
+  display: flex;
+  justify-content: center;
+  padding-top: clamp(32px, 8vw, 120px);
+}
+
+.copilot-card {
+  width: min(656px, 100%);
+  padding: 9px 8px;
+  background: rgba(68, 25, 6, 0.04);
+  border-radius: 20px;
+}
+
+.copilot-card__inner {
+  background: #fff;
+  border: 1px solid rgba(5, 110, 225, 0.11);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-copilot);
+  overflow: hidden;
+}
+
+.copilot-card__head {
+  display: grid;
+  grid-template-columns: 28px 1fr auto auto;
+  align-items: center;
+  gap: 10px 12px;
+  padding: 16px 16px 16px 50px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+  min-height: 60px;
+}
+
+.copilot-card__spark {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.copilot-card__title {
+  font-weight: 600;
+  font-size: 13.12px;
+  color: #737373;
+}
+
+.copilot-card__badge {
+  font-size: 10.4px;
+  font-weight: 600;
+  color: var(--orange);
+  background: var(--orange-pill);
+  padding: 4px 10px;
+  border-radius: 20px;
+  justify-self: end;
+}
+
+.lang-toggle {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  background: rgba(115, 115, 115, 0.06);
+  border-radius: 8px;
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 520px) {
+  .copilot-card__head {
+    grid-template-columns: 28px minmax(0, 1fr) auto auto;
+  }
+  .lang-toggle {
+    grid-column: auto;
+  }
+}
+
+.lang-toggle button {
+  flex: 1;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 10.88px;
+  font-weight: 600;
+  color: rgba(71, 71, 71, 0.4);
+}
+
+.lang-toggle button.is-active {
+  background: #fc9a61;
+  color: #fff;
+}
+
+.copilot-card__messages {
+  padding: 20px;
+  min-height: 200px;
+  max-height: 320px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bubble {
+  background: var(--blue-bubble);
+  border-radius: 14px 14px 14px 4px;
+  padding: 12px 16px;
+  max-width: 100%;
+}
+
+.bubble--user {
+  align-self: flex-end;
+  background: rgba(253, 109, 14, 0.1);
+  border-radius: 14px 14px 4px 14px;
+}
+
+.bubble__label {
+  font-size: 10.4px;
+  font-weight: 600;
+  color: var(--blue-label);
+  opacity: 0.85;
+  margin-bottom: 6px;
+}
+
+.bubble--user .bubble__label {
+  color: var(--orange);
+}
+
+.bubble__text {
+  margin: 0;
+  font-size: 13.44px;
+  line-height: 1.55;
+  color: rgba(115, 115, 115, 0.95);
+}
+
+.bubble--user .bubble__text {
+  color: var(--navy);
+}
+
+.copilot-card__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 20px 16px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px 6px 8px;
+  background: #efefef;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #111;
+  transition: background 0.15s;
+}
+
+.chip:hover {
+  background: #e5e5e5;
+}
+
+.copilot-card__input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.copilot-input {
+  flex: 1;
+  position: relative;
+}
+
+.copilot-input input {
+  width: 100%;
+  height: 39px;
+  padding: 0 52px 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: var(--font-display);
+}
+
+.copilot-input input:focus {
+  outline: 2px solid rgba(253, 109, 14, 0.35);
+  outline-offset: 1px;
+}
+
+.hero__social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 32px;
+  padding: 4px 12px;
+  border: 0.7px solid #ffbf99;
+  border-radius: 70px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 14px;
+}
+
+.hero__social .muted {
+  color: #bebebe;
+}
+
+.hero__social .accent {
+  color: #fb650c;
+}

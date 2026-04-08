@@ -1,0 +1,14 @@
+.DS_Store
+.cursor/
+*.webm
+*.mp4
+*.glb
+ramp_nyc25*
+1775495323781*
+particle-default-effect*
+mountex-hkstp-landing-figma*
+mountex-hkstp-hero-particles.js
+Generated*.png
+HKSTP*.png
+image*.png
+背景.png
