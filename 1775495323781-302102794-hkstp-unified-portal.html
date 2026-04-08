@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HKSTP Unified Portal — Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1628;
+  --navy-mid: #132240;
+  --navy-light: #1b3058;
+  --teal: #00c9a7;
+  --teal-dim: #00a88c;
+  --teal-glow: rgba(0,201,167,.12);
+  --teal-glow2: rgba(0,201,167,.06);
+  --amber: #f59e0b;
+  --coral: #f43f5e;
+  --sky: #38bdf8;
+  --violet: #8b5cf6;
+  --white: #ffffff;
+  --ghost: #f0f4f8;
+  --ghost2: #e2e8f0;
+  --slate: #64748b;
+  --slate-dark: #475569;
+  --text: #1e293b;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --radius-xs: 6px;
+  --shadow: 0 1px 3px rgba(0,0,0,.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.1);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,.12);
+  --font: 'Outfit', -apple-system, sans-serif;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --transition: .25s cubic-bezier(.4,0,.2,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font);background:var(--ghost);color:var(--text);line-height:1.6;overflow-x:hidden;}
+button{font-family:var(--font);cursor:pointer;border:none;outline:none;}
+input,select,textarea{font-family:var(--font);outline:none;}
+a{text-decoration:none;color:inherit;}
+
+/* ═══ GLOBAL NAV ═══ */
+.topnav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  background:rgba(10,22,40,.92);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  padding:0 32px;
+  height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:var(--transition);
+}
+.topnav .logo{display:flex;align-items:center;gap:10px;}
+.topnav .logo-icon{
+  width:32px;height:32px;border-radius:8px;
+  background:linear-gradient(135deg,var(--teal),#00e6c3);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:14px;color:var(--navy);
+}
+.topnav .logo-text{color:#fff;font-weight:600;font-size:.95rem;letter-spacing:-.2px;}
+.topnav .logo-text span{color:var(--teal);font-weight:700;}
+.topnav-links{display:flex;align-items:center;gap:4px;}
+.topnav-links a{
+  color:rgba(255,255,255,.55);font-size:.82rem;font-weight:500;
+  padding:8px 16px;border-radius:8px;transition:var(--transition);
+}
+.topnav-links a:hover,.topnav-links a.active{color:#fff;background:rgba(255,255,255,.08);}
+.topnav-right{display:flex;align-items:center;gap:12px;}
+.btn-nav{
+  background:var(--teal);color:var(--navy);
+  font-size:.78rem;font-weight:600;
+  padding:8px 20px;border-radius:8px;
+  transition:var(--transition);
+}
+.btn-nav:hover{background:#00e6c3;transform:translateY(-1px);}
+.avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--violet),var(--sky));
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:.75rem;font-weight:700;
+}
+
+/* ═══ PAGE ROUTER ═══ */
+.page{display:none;min-height:100vh;padding-top:60px;}
+.page.active{display:block;}
+
+/* ═══ HERO ═══ */
+.hero{
+  background:var(--navy);
+  position:relative;overflow:hidden;
+  padding:80px 48px 100px;
+}
+.hero-grid{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 420px;gap:48px;
+  align-items:center;
+}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr;} .hero-right{order:-1;}}
+.hero-left h1{
+  font-family:var(--serif);
+  font-size:clamp(2.2rem,4.8vw,3.4rem);
+  font-weight:700;color:#fff;
+  line-height:1.15;margin-bottom:18px;
+  letter-spacing:-.5px;
+}
+.hero-left h1 em{color:var(--teal);font-style:italic;}
+.hero-left p{color:rgba(255,255,255,.55);font-size:1.05rem;max-width:480px;margin-bottom:28px;line-height:1.7;}
+.hero-stats{display:flex;gap:36px;margin-top:32px;}
+.hero-stat .num{font-size:1.8rem;font-weight:800;color:var(--teal);}
+.hero-stat .lab{font-size:.72rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;font-weight:500;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-primary{
+  background:var(--teal);color:var(--navy);
+  font-size:.88rem;font-weight:600;
+  padding:14px 32px;border-radius:10px;
+  transition:var(--transition);
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-primary:hover{background:#00e6c3;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,201,167,.3);}
+.btn-secondary{
+  background:rgba(255,255,255,.06);color:#fff;
+  border:1px solid rgba(255,255,255,.12);
+  font-size:.88rem;font-weight:500;
+  padding:14px 28px;border-radius:10px;
+  transition:var(--transition);
+}
+.btn-secondary:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);}
+
+/* Hero decorative */
+.hero::before{
+  content:'';position:absolute;top:-300px;right:-200px;
+  width:800px;height:800px;
+  background:radial-gradient(circle,rgba(0,201,167,.08),transparent 60%);
+  border-radius:50%;
+}
+.hero::after{
+  content:'';position:absolute;bottom:-200px;left:10%;
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(139,92,246,.06),transparent 60%);
+  border-radius:50%;
+}
+.hero-pattern{
+  position:absolute;inset:0;
+  background-image:
+    radial-gradient(rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size:32px 32px;
+  pointer-events:none;
+}
+
+/* ═══ AI CHAT WIDGET ═══ */
+.chat-widget{
+  background:var(--navy-mid);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+  position:relative;z-index:2;
+}
+.chat-header{
+  padding:16px 20px;
+  background:rgba(255,255,255,.03);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;gap:10px;
+}
+.chat-header .ai-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--teal);
+  animation:glow 2s infinite;
+}
+@keyframes glow{0%,100%{box-shadow:0 0 4px var(--teal);}50%{box-shadow:0 0 16px var(--teal);}}
+.chat-header span{color:#fff;font-size:.82rem;font-weight:600;}
+.chat-header .tag{
+  margin-left:auto;
+  background:rgba(0,201,167,.12);color:var(--teal);
+  font-size:.65rem;font-weight:600;
+  padding:3px 10px;border-radius:20px;
+}
+.chat-body{padding:20px;height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;}
+.chat-msg{max-width:85%;padding:12px 16px;border-radius:14px;font-size:.84rem;line-height:1.55;animation:msgIn .4s ease both;}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.chat-msg.ai{
+  background:rgba(0,201,167,.1);color:rgba(255,255,255,.9);
+  border-bottom-left-radius:4px;align-self:flex-start;
+}
+.chat-msg.user{
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);
+  border-bottom-right-radius:4px;align-self:flex-end;
+}
+.chat-msg .sender{font-size:.65rem;font-weight:600;margin-bottom:4px;opacity:.6;}
+.chat-input-area{
+  padding:12px 16px;
+  border-top:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;gap:8px;
+}
+.chat-input-wrap{
+  flex:1;position:relative;display:flex;align-items:center;
+}
+.chat-input{
+  width:100%;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;padding:10px 52px 10px 16px;
+  color:#fff;font-size:.84rem;
+  transition:var(--transition);
+}
+.chat-input::placeholder{color:rgba(255,255,255,.25);}
+.chat-input:focus{border-color:var(--teal);background:rgba(0,201,167,.04);}
+/* Language switcher in chat header */
+.lang-switcher{
+  display:flex;align-items:center;gap:2px;
+  margin-left:8px;
+  background:rgba(255,255,255,.06);
+  border-radius:8px;padding:2px;
+}
+.lang-pill{
+  font-size:.68rem;font-weight:600;
+  padding:4px 10px;border-radius:6px;
+  color:rgba(255,255,255,.4);
+  background:transparent;border:none;
+  cursor:pointer;transition:var(--transition);
+  font-family:var(--font);
+}
+.lang-pill:hover{color:rgba(255,255,255,.7);}
+.lang-pill.active{
+  background:var(--teal);color:var(--navy);
+}
+
+/* Voice button — clean round icon */
+.voice-btn-round{
+  position:absolute;right:4px;top:50%;transform:translateY(-50%);
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,#f43f5e,#fb923c);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:var(--transition);
+  border:none;
+  box-shadow:0 2px 12px rgba(244,63,94,.35);
+  z-index:2;
+}
+.voice-btn-round:hover{transform:translateY(-50%) scale(1.1);box-shadow:0 4px 20px rgba(244,63,94,.5);}
+.voice-btn-round.recording{
+  background:linear-gradient(135deg,#dc2626,#f43f5e);
+  animation:voicePulse 1s infinite;
+}
+@keyframes voicePulse{0%,100%{box-shadow:0 0 0 0 rgba(244,63,94,.5);}50%{box-shadow:0 0 0 12px rgba(244,63,94,0);}}
+
+/* Voice hint tooltip — stays visible until dismissed */
+.voice-hint{
+  position:absolute;bottom:calc(100% + 14px);right:-4px;
+  background:var(--navy);color:rgba(255,255,255,.9);
+  font-size:.72rem;font-weight:500;line-height:1.4;
+  padding:10px 16px;border-radius:12px;
+  white-space:nowrap;
+  box-shadow:0 6px 24px rgba(0,0,0,.5);
+  border:1px solid rgba(0,201,167,.3);
+  z-index:20;
+  pointer-events:none;
+  opacity:0;
+  transform:translateY(6px);
+  animation:hintEnter .4s ease 2s forwards, hintBob 2.5s ease-in-out 2.5s infinite;
+}
+.voice-hint.hidden{
+  animation:hintExit .3s ease forwards !important;
+}
+.voice-hint strong{color:var(--teal);font-weight:700;}
+.voice-hint-arrow{
+  position:absolute;bottom:-6px;right:16px;
+  width:12px;height:12px;
+  background:var(--navy);
+  border-right:1px solid rgba(0,201,167,.3);
+  border-bottom:1px solid rgba(0,201,167,.3);
+  transform:rotate(45deg);
+}
+@keyframes hintEnter{
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes hintBob{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-4px);}
+}
+@keyframes hintExit{
+  to{opacity:0;transform:translateY(6px);}
+}
+  45%{transform:translateY(-2px);}
+  50%{transform:translateY(0);}
+  85%{opacity:1;transform:translateY(0);}
+  100%{opacity:0;transform:translateY(6px);}
+}
+/* CTA quick-prompt chips */
+.cta-chip{
+  background:rgba(0,201,167,.08);
+  border:1px solid rgba(0,201,167,.18);
+  color:rgba(255,255,255,.85);
+  font-size:.74rem;font-weight:500;font-family:var(--font);
+  padding:8px 14px;border-radius:10px;
+  cursor:pointer;transition:var(--transition);
+  white-space:nowrap;
+  display:inline-flex;align-items:center;gap:7px;
+}
+.cta-chip:hover{background:rgba(0,201,167,.2);border-color:var(--teal);color:#fff;transform:translateY(-1px);}
+/* Voice dropdown */
+.voice-dropdown{
+  position:absolute;bottom:calc(100% + 8px);right:0;
+  background:var(--navy-mid);border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;padding:8px;min-width:200px;
+  box-shadow:0 12px 32px rgba(0,0,0,.4);
+  display:none;z-index:10;
+}
+.voice-dropdown.open{display:block;animation:slideUp .2s ease;}
+.voice-lang{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:8px;cursor:pointer;
+  transition:var(--transition);
+}
+.voice-lang:hover{background:rgba(255,255,255,.06);}
+.voice-lang.active{background:rgba(0,201,167,.1);}
+.voice-lang .lang-flag{font-size:1.2rem;}
+.voice-lang .lang-name{color:#fff;font-size:.82rem;font-weight:500;}
+.voice-lang .lang-sub{color:rgba(255,255,255,.35);font-size:.68rem;}
+.voice-lang .lang-check{margin-left:auto;color:var(--teal);font-size:.8rem;display:none;}
+.voice-lang.active .lang-check{display:block;}
+.voice-status{
+  display:none;align-items:center;gap:8px;
+  padding:8px 16px;margin:0 16px 8px;
+  background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.15);
+  border-radius:8px;
+}
+.voice-status.active{display:flex;}
+.voice-status .vs-dot{width:8px;height:8px;border-radius:50%;background:#f43f5e;animation:voicePulse 1s infinite;}
+.voice-status .vs-text{color:rgba(255,255,255,.6);font-size:.76rem;}
+.voice-status .vs-wave{display:flex;gap:2px;align-items:center;margin-left:auto;}
+.voice-status .vs-bar{width:3px;border-radius:2px;background:var(--coral);animation:waveBar .5s ease infinite alternate;}
+.voice-status .vs-bar:nth-child(1){height:8px;animation-delay:0s;}
+.voice-status .vs-bar:nth-child(2){height:14px;animation-delay:.1s;}
+.voice-status .vs-bar:nth-child(3){height:10px;animation-delay:.2s;}
+.voice-status .vs-bar:nth-child(4){height:16px;animation-delay:.15s;}
+.voice-status .vs-bar:nth-child(5){height:8px;animation-delay:.05s;}
+@keyframes waveBar{from{height:4px;}to{height:18px;}}
+.chat-send{
+  width:38px;height:38px;border-radius:10px;
+  background:var(--teal);color:var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;font-weight:700;
+  transition:var(--transition);flex-shrink:0;
+}
+.chat-send:hover{background:#00e6c3;}
+/* Typing cursor animation */
+.typing-cursor{
+  display:inline-block;width:2px;height:1em;
+  background:var(--teal);margin-left:1px;
+  animation:blink .6s step-end infinite;
+  vertical-align:text-bottom;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* Quick option pills */
+.chat-options{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.chat-pill{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  color:rgba(255,255,255,.7);
+  font-size:.72rem;font-weight:500;
+  padding:6px 14px;border-radius:20px;
+  cursor:pointer;transition:var(--transition);
+}
+.chat-pill:hover{background:rgba(0,201,167,.1);border-color:var(--teal);color:var(--teal);}
+
+/* ═══ PROGRAMMES SECTION ═══ */
+.section{padding:64px 48px;}
+@media(max-width:700px){.section{padding:40px 20px;}}
+.section-inner{max-width:1200px;margin:0 auto;}
+.section-label{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.68rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;
+}
+.section-label .line{width:24px;height:2px;background:var(--teal);border-radius:2px;}
+.section h2{
+  font-family:var(--serif);font-size:clamp(1.6rem,3vw,2.2rem);
+  font-weight:700;margin-bottom:8px;letter-spacing:-.3px;
+}
+.section .lead{font-size:.95rem;color:var(--slate);max-width:560px;margin-bottom:36px;}
+
+/* Programme cards */
+.prog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;}
+.prog-card{
+  background:var(--white);border:1px solid var(--ghost2);
+  border-radius:var(--radius);overflow:hidden;
+  transition:var(--transition);position:relative;
+}
+.prog-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-4px);border-color:transparent;}
+.prog-card-top{padding:28px 28px 0;display:flex;align-items:flex-start;gap:14px;}
+.prog-card-icon{
+  width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.85rem;color:#fff;
+}
+.prog-card-top h3{font-size:1.05rem;font-weight:700;margin-bottom:2px;}
+.prog-card-top .stage{font-size:.72rem;color:var(--slate);font-weight:500;}
+.prog-card-body{padding:16px 28px 24px;}
+.prog-card-body p{font-size:.84rem;color:var(--slate-dark);margin-bottom:14px;line-height:1.6;}
+.prog-card-meta{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
+.prog-card-meta .meta{
+  background:var(--ghost);border-radius:var(--radius-xs);
+  padding:8px 12px;flex:1;min-width:120px;
+}
+.prog-card-meta .meta .m-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.8px;color:var(--slate);font-weight:600;}
+.prog-card-meta .meta .m-val{font-size:.88rem;font-weight:700;margin-top:2px;}
+.prog-card-footer{
+  padding:14px 28px;
+  background:var(--ghost);
+  border-top:1px solid var(--ghost2);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.prog-card-footer .eligibility{font-size:.72rem;color:var(--slate);font-weight:500;}
+.btn-apply{
+  background:var(--navy);color:#fff;
+  font-size:.76rem;font-weight:600;
+  padding:8px 20px;border-radius:var(--radius-xs);
+  transition:var(--transition);
+}
+.btn-apply:hover{background:var(--navy-light);}
+
+/* ═══ APPLICATION PAGE ═══ */
+.app-container{
+  max-width:800px;margin:0 auto;padding:40px 48px 80px;
+}
+.app-stepper{
+  display:flex;align-items:center;gap:0;margin-bottom:40px;
+  position:relative;
+}
+.step{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  position:relative;z-index:2;
+}
+.step-dot{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--ghost2);color:var(--slate);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;font-weight:700;
+  margin-bottom:8px;transition:var(--transition);
+}
+.step.active .step-dot{background:var(--teal);color:var(--navy);}
+.step.done .step-dot{background:var(--navy);color:#fff;}
+.step-label{font-size:.68rem;font-weight:500;color:var(--slate);text-align:center;}
+.step.active .step-label{color:var(--text);font-weight:600;}
+.step-line{
+  position:absolute;top:18px;left:0;right:0;height:2px;
+  background:var(--ghost2);z-index:1;
+}
+.step-line-fill{
+  height:100%;background:var(--navy);
+  transition:width .5s ease;
+}
+
+/* Form */
+.form-section{
+  background:var(--white);border:1px solid var(--ghost2);
+  border-radius:var(--radius);padding:32px;
+  margin-bottom:20px;box-shadow:var(--shadow);
+}
+.form-section h3{font-size:1.05rem;font-weight:700;margin-bottom:4px;}
+.form-section .fs-desc{font-size:.84rem;color:var(--slate);margin-bottom:20px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+@media(max-width:600px){.form-row{grid-template-columns:1fr;}}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group label{font-size:.76rem;font-weight:600;color:var(--slate-dark);}
+.form-group input,.form-group select,.form-group textarea{
+  background:var(--ghost);border:1.5px solid var(--ghost2);
+  border-radius:var(--radius-sm);padding:12px 16px;
+  font-size:.88rem;color:var(--text);
+  transition:var(--transition);
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  border-color:var(--teal);background:#fff;
+  box-shadow:0 0 0 3px var(--teal-glow);
+}
+.form-group textarea{resize:vertical;min-height:100px;}
+.form-group .prefilled{
+  background:var(--teal-glow2);border-color:var(--teal);
+  position:relative;
+}
+.ai-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:.62rem;font-weight:600;color:var(--teal);
+  background:var(--teal-glow);padding:2px 8px;border-radius:10px;
+}
+.form-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:24px;}
+.btn-outline{
+  background:transparent;color:var(--text);
+  border:1.5px solid var(--ghost2);
+  font-size:.84rem;font-weight:500;
+  padding:12px 28px;border-radius:var(--radius-sm);
+  transition:var(--transition);
+}
+.btn-outline:hover{border-color:var(--slate);background:var(--ghost);}
+.btn-solid{
+  background:var(--navy);color:#fff;
+  font-size:.84rem;font-weight:600;
+  padding:12px 32px;border-radius:var(--radius-sm);
+  transition:var(--transition);
+}
+.btn-solid:hover{background:var(--navy-light);}
+
+/* ═══ DASHBOARD ═══ */
+.dash{
+  max-width:1200px;margin:0 auto;padding:32px 48px 80px;
+}
+.dash-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:32px;flex-wrap:wrap;gap:16px;
+}
+.dash-header h2{font-size:1.4rem;font-weight:700;}
+.dash-header .greeting{font-size:.88rem;color:var(--slate);}
+.dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
+@media(max-width:800px){.dash-stats{grid-template-columns:repeat(2,1fr);}}
+.stat-card{
+  background:var(--white);border:1px solid var(--ghost2);
+  border-radius:var(--radius);padding:22px;
+  box-shadow:var(--shadow);
+}
+.stat-card .s-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.8px;color:var(--slate);font-weight:600;}
+.stat-card .s-value{font-size:1.7rem;font-weight:800;margin-top:4px;}
+.stat-card .s-change{font-size:.72rem;font-weight:500;margin-top:4px;}
+.stat-card .s-change.up{color:var(--teal);}
+
+/* Application pipeline */
+.pipeline{
+  background:var(--white);border:1px solid var(--ghost2);
+  border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow);margin-bottom:24px;
+}
+.pipeline-header{
+  padding:20px 24px;border-bottom:1px solid var(--ghost2);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.pipeline-header h3{font-size:.95rem;font-weight:700;}
+.pipeline-body{overflow-x:auto;}
+.pipeline-table{width:100%;border-collapse:collapse;min-width:700px;}
+.pipeline-table th{
+  padding:12px 18px;text-align:left;
+  font-size:.68rem;text-transform:uppercase;letter-spacing:.7px;
+  color:var(--slate);font-weight:600;
+  background:var(--ghost);border-bottom:1px solid var(--ghost2);
+}
+.pipeline-table td{
+  padding:14px 18px;border-bottom:1px solid var(--ghost2);
+  font-size:.84rem;vertical-align:middle;
+}
+.pipeline-table tbody tr{transition:var(--transition);}
+.pipeline-table tbody tr:hover{background:var(--teal-glow2);}
+.status-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:.72rem;font-weight:600;
+  padding:4px 12px;border-radius:20px;
+}
+.status-badge .dot{width:6px;height:6px;border-radius:50%;}
+.status-review{background:#fef3c7;color:#92400e;}.status-review .dot{background:#f59e0b;}
+.status-approved{background:#d1fae5;color:#065f46;}.status-approved .dot{background:#059669;}
+.status-panel{background:#dbeafe;color:#1e40af;}.status-panel .dot{background:#2563eb;}
+.status-draft{background:#f1f5f9;color:#475569;}.status-draft .dot{background:#94a3b8;}
+
+/* D365 CRM section */
+.crm-section{
+  background:linear-gradient(135deg,#0a1628 0%,#132240 100%);
+  border-radius:var(--radius);padding:32px;
+  margin-bottom:24px;color:#fff;
+}
+.crm-section h3{font-size:1.1rem;font-weight:700;margin-bottom:4px;}
+.crm-section .crm-sub{font-size:.84rem;color:rgba(255,255,255,.5);margin-bottom:20px;}
+.crm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+.crm-tile{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:var(--radius-sm);padding:18px;
+  transition:var(--transition);
+}
+.crm-tile:hover{background:rgba(0,201,167,.06);border-color:rgba(0,201,167,.2);}
+.crm-tile .ct-icon{font-size:1.4rem;margin-bottom:8px;}
+.crm-tile h4{font-size:.82rem;font-weight:600;margin-bottom:4px;}
+.crm-tile p{font-size:.72rem;color:rgba(255,255,255,.4);line-height:1.5;}
+.ms-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(0,120,212,.15);color:#60a5fa;
+  font-size:.62rem;font-weight:600;
+  padding:3px 10px;border-radius:12px;margin-top:8px;
+}
+
+/* ═══ PINNED COPILOT (scroll-shrink) ═══ */
+#copilot-wrapper{
+  position:relative;z-index:2;
+  transition:all .45s cubic-bezier(.4,0,.2,1);
+}
+#copilot-wrapper.pinned{
+  position:fixed !important;
+  bottom:28px;right:28px;
+  z-index:999;
+  width:380px;
+}
+#copilot-wrapper.pinned .chat-widget{
+  box-shadow:0 16px 48px rgba(0,0,0,.5) !important;
+}
+#copilot-wrapper.pinned .chat-body{
+  height:280px !important;
+}
+#copilot-wrapper.pinned .hero-cta-prompts{
+  display:none !important;
+}
+/* Minimised pill state — chat collapsed to a bar */
+#copilot-wrapper.pinned.minimised .chat-widget{
+  border-radius:28px;overflow:hidden;cursor:pointer;
+}
+#copilot-wrapper.pinned.minimised .chat-body,
+#copilot-wrapper.pinned.minimised .chat-input-area,
+#copilot-wrapper.pinned.minimised .voice-status,
+#copilot-wrapper.pinned.minimised .voice-hint{
+  display:none !important;
+}
+#copilot-wrapper.pinned.minimised .chat-header{
+  padding:12px 18px;
+}
+#copilot-wrapper.pinned.minimised .chat-header::after{
+  content:'\25B2';
+  font-size:.55rem;color:rgba(255,255,255,.35);
+  margin-left:auto;
+  transition:var(--transition);
+}
+#copilot-wrapper.pinned:not(.minimised) .chat-header::after{
+  content:'\25BC';
+  font-size:.55rem;color:rgba(255,255,255,.35);
+  margin-left:auto;
+  cursor:pointer;
+}
+/* Un-pin back to hero */
+#copilot-wrapper.in-hero{
+  position:relative !important;
+  width:100%;bottom:auto;right:auto;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+/* ═══ FOOTER ═══ */
+.site-footer{
+  background:var(--navy);padding:48px;
+  border-top:1px solid rgba(255,255,255,.04);
+}
+.footer-inner{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;
+}
+@media(max-width:800px){.footer-inner{grid-template-columns:1fr 1fr;}}
+.footer-brand p{color:rgba(255,255,255,.35);font-size:.82rem;margin-top:12px;line-height:1.6;}
+.footer-col h4{color:rgba(255,255,255,.5);font-size:.68rem;text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:14px;}
+.footer-col a{display:block;color:rgba(255,255,255,.4);font-size:.82rem;padding:4px 0;transition:var(--transition);}
+.footer-col a:hover{color:var(--teal);}
+.footer-bottom{
+  max-width:1200px;margin:24px auto 0;padding-top:24px;
+  border-top:1px solid rgba(255,255,255,.06);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.footer-bottom p{color:rgba(255,255,255,.25);font-size:.72rem;}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.anim{animation:fadeIn .6s ease both;}
+.anim-d1{animation-delay:.1s;}.anim-d2{animation-delay:.2s;}.anim-d3{animation-delay:.3s;}.anim-d4{animation-delay:.4s;}.anim-d5{animation-delay:.5s;}.anim-d6{animation-delay:.6s;}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:700px){
+  .hero{padding:48px 20px 60px;}
+  .topnav{padding:0 16px;}
+  .topnav-links{display:none;}
+  .app-container{padding:32px 20px 60px;}
+  .dash{padding:24px 16px 60px;}
+  .prog-grid{grid-template-columns:1fr;}
+  .section{padding:40px 20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAVIGATION ═══════════ -->
+<nav class="topnav">
+  <div class="logo">
+    <div class="logo-icon">H</div>
+    <div class="logo-text"><span>HKSTP</span> Portal</div>
+  </div>
+  <div class="topnav-links">
+    <a href="#" class="active" onclick="showPage('home')">Home</a>
+    <a href="#" onclick="showPage('programmes')">Programmes</a>
+    <a href="#" onclick="showPage('apply')">Apply</a>
+    <a href="#" onclick="showPage('dashboard')">Dashboard</a>
+    <a href="#" onclick="showPage('crm')">CRM (Staff)</a>
+  </div>
+  <div class="topnav-right">
+    <button class="btn-nav" onclick="showPage('apply')">Apply Now</button>
+    <div class="avatar">JC</div>
+  </div>
+</nav>
+
+<!-- ═══════════ PAGE: HOME ═══════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO — AI Copilot Chat (scrolls to pinned bottom-right) -->
+  <section class="hero" id="hero-section" style="padding:60px 48px 80px;">
+    <div class="hero-pattern"></div>
+    <div style="max-width:640px;margin:0 auto;position:relative;z-index:2;">
+      <!-- This wrapper gets repositioned by scroll JS -->
+      <div id="copilot-wrapper" class="anim in-hero">
+        <div class="chat-widget" id="hero-chat" style="box-shadow:0 24px 80px rgba(0,0,0,.5);" onclick="expandCopilot()">
+          <div class="chat-header">
+            <div class="ai-dot"></div>
+            <span>HKSTP Copilot</span>
+            <div class="tag">AI-Powered</div>
+            <!-- Language switcher for copilot messages -->
+            <div class="lang-switcher" id="lang-switcher">
+              <button class="lang-pill active" data-lang="en" onclick="event.stopPropagation();switchCopilotLang('en',this)">EN</button>
+              <button class="lang-pill" data-lang="zh" onclick="event.stopPropagation();switchCopilotLang('zh',this)">中</button>
+              <button class="lang-pill" data-lang="yue" onclick="event.stopPropagation();switchCopilotLang('yue',this)">粵</button>
+            </div>
+          </div>
+          <div class="chat-body" id="hero-chat-body" style="height:320px;">
+            <!-- AI introduction message -->
+            <div class="chat-msg ai" style="animation-delay:.2s;">
+              <div class="sender">HKSTP Copilot</div>
+              Hi! I'm your HKSTP AI Copilot. I can match you to the right programme, check your eligibility, and guide your application — all in one conversation.
+            </div>
+            <div class="chat-msg ai" style="animation-delay:.6s;">
+              <div class="sender">HKSTP Copilot</div>
+              Tell me about your startup — describe who you are, your mission, and your current status. Or try one of these:
+            </div>
+            <!-- Call-to-action quick prompts -->
+            <div class="hero-cta-prompts" style="display:flex;flex-wrap:wrap;gap:8px;padding:4px 0;animation:msgIn .4s ease .9s both;">
+              <button class="cta-chip" onclick="event.stopPropagation();fillPrompt('Walk me through the application process step by step')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;opacity:.6;"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2Z"/><path d="M9 12h6M9 16h6"/></svg>
+                Step-by-step application guide
+              </button>
+              <button class="cta-chip" onclick="event.stopPropagation();fillPrompt('What documents and materials do I need to prepare for my application?')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;opacity:.6;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg>
+                What do I need to prepare?
+              </button>
+              <button class="cta-chip" onclick="event.stopPropagation();fillPrompt('Which programme is the best fit for my startup?')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;opacity:.6;"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+                Help me find the right programme
+              </button>
+              <button class="cta-chip" onclick="event.stopPropagation();fillPrompt('What are the eligibility requirements and how do I check if I qualify?')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;opacity:.6;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
+                Check my eligibility
+              </button>
+            </div>
+          </div>
+          <!-- Voice recording status bar -->
+          <div class="voice-status" id="voice-status">
+            <div class="vs-dot"></div>
+            <div class="vs-text" id="voice-status-text">Listening in English...</div>
+            <div class="vs-wave"><div class="vs-bar"></div><div class="vs-bar"></div><div class="vs-bar"></div><div class="vs-bar"></div><div class="vs-bar"></div></div>
+          </div>
+          <div class="chat-input-area">
+            <div class="chat-input-wrap">
+              <input class="chat-input" placeholder="We are... Our mission is... Our status is..." id="hero-chat-input" onkeydown="if(event.key==='Enter')sendChat()" onfocus="stopTypingDemo()" onclick="event.stopPropagation()">
+              <!-- Voice mode button -->
+              <button class="voice-btn-round" id="voice-btn" onclick="event.stopPropagation();startVoiceRecording()" title="Speak to input">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+              </button>
+              <!-- Tooltip hint popup pointing at mic button -->
+              <div class="voice-hint" id="voice-hint">
+                <div class="voice-hint-arrow"></div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+                  <span>You can speak to input in <strong>English</strong> / <strong>&#26222;&#36890;&#35441;</strong> / <strong>&#24291;&#26481;&#35441;</strong></span>
+                </div>
+              </div>
+            </div>
+            <button class="chat-send" onclick="event.stopPropagation();sendChat()">&#8593;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAMMES ON HOME PAGE -->
+  <section class="section" style="background:#fff;padding-top:48px;padding-bottom:48px;">
+    <div class="section-inner">
+      <div class="section-label"><span class="line"></span>Our Programmes</div>
+      <h2>Find the right programme for your stage</h2>
+      <p class="lead">Six programmes from idea-stage to global scaleup. Browse below or let the AI Copilot match you.</p>
+      <div class="prog-grid">
+        <div class="prog-card anim">
+          <div class="prog-card-top">
+            <div class="prog-card-icon" style="background:linear-gradient(135deg,#f43f5e,#fb923c);">01</div>
+            <div><h3>Ideation Programme</h3><div class="stage">Pre-startup | Equity-free seed funding</div></div>
+          </div>
+          <div class="prog-card-body">
+            <p>Transform your innovative idea into a viable business with structured guidance, seed funding, mentorship, and access to HKSTP's ecosystem.</p>
+            <div class="prog-card-meta">
+              <div class="meta"><div class="m-label">Funding</div><div class="m-val">HKD 100K</div></div>
+              <div class="meta"><div class="m-label">Duration</div><div class="m-val">1 Year</div></div>
+              <div class="meta"><div class="m-label">Windows</div><div class="m-val">Jan/May/Sep</div></div>
+            </div>
+          </div>
+          <div class="prog-card-footer">
+            <div class="eligibility">HKID holder, 18+, innovative idea</div>
+            <button class="btn-apply" onclick="startApplication('ideation')">Apply</button>
+          </div>
+        </div>
+        <div class="prog-card anim anim-d1">
+          <div class="prog-card-top">
+            <div class="prog-card-icon" style="background:linear-gradient(135deg,#2563eb,#38bdf8);">02</div>
+            <div><h3>Incubation Programme</h3><div class="stage">Early-stage | 3-year deep support</div></div>
+          </div>
+          <div class="prog-card-body">
+            <p>Develop your first solutions from technical builds through market exploration and business development to commercialisation readiness.</p>
+            <div class="prog-card-meta">
+              <div class="meta"><div class="m-label">Funding</div><div class="m-val">HKD 1.29M</div></div>
+              <div class="meta"><div class="m-label">Duration</div><div class="m-val">3 Years</div></div>
+              <div class="meta"><div class="m-label">Applications</div><div class="m-val">Year-Round</div></div>
+            </div>
+          </div>
+          <div class="prog-card-footer">
+            <div class="eligibility">HK company, &lt;5 yrs, prototype/MVP</div>
+            <button class="btn-apply" onclick="startApplication('incubation')">Apply</button>
+          </div>
+        </div>
+        <div class="prog-card anim anim-d2">
+          <div class="prog-card-top">
+            <div class="prog-card-icon" style="background:linear-gradient(135deg,#f59e0b,#fbbf24);">03</div>
+            <div><h3>Co-Development</h3><div class="stage">Partner-driven | Co-ideation & co-incubation</div></div>
+          </div>
+          <div class="prog-card-body">
+            <p>Pair with corporate partners for co-creation, go-to-market support, and dedicated mentorship through the Co-Ideation or Co-Incubation tracks.</p>
+            <div class="prog-card-meta">
+              <div class="meta"><div class="m-label">Tracks</div><div class="m-val">2 Tracks</div></div>
+              <div class="meta"><div class="m-label">Model</div><div class="m-val">Corporate</div></div>
+              <div class="meta"><div class="m-label">Review</div><div class="m-val">~3 Months</div></div>
+            </div>
+          </div>
+          <div class="prog-card-footer">
+            <div class="eligibility">Open to early-stage startups</div>
+            <button class="btn-apply" onclick="startApplication('codev')">Apply</button>
+          </div>
+        </div>
+        <div class="prog-card anim anim-d3">
+          <div class="prog-card-top">
+            <div class="prog-card-icon" style="background:linear-gradient(135deg,#059669,#34d399);">04</div>
+            <div><h3>LEAP Acceleration</h3><div class="stage">Growth-stage | Global expansion</div></div>
+          </div>
+          <div class="prog-card-body">
+            <p>Accelerate onto the global stage with HKD 4.7M programme value, access to 70+ corporate partners, and GBA/ASEAN market expansion support.</p>
+            <div class="prog-card-meta">
+              <div class="meta"><div class="m-label">Value</div><div class="m-val">HKD 4.7M</div></div>
+              <div class="meta"><div class="m-label">Cash</div><div class="m-val">HKD 1.2M</div></div>
+              <div class="meta"><div class="m-label">Equity</div><div class="m-val">5% Option</div></div>
+            </div>
+          </div>
+          <div class="prog-card-footer">
+            <div class="eligibility">HKSTP tenant, ready-for-market product</div>
+            <button class="btn-apply" onclick="startApplication('leap')">Apply</button>
+          </div>
+        </div>
+        <div class="prog-card anim anim-d4">
+          <div class="prog-card-top">
+            <div class="prog-card-icon" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa);">05</div>
+            <div><h3>Co-Acceleration</h3><div class="stage">Deep-tech | Public-Private fund</div></div>
+          </div>
+          <div class="prog-card-body">
+            <p>HK's first PPP I&T fund. Co-invests with top-tier LPs across Generative AI, Intelligent Connected Systems, and Sustainability.</p>
+            <div class="prog-card-meta">
+              <div class="meta"><div class="m-label">Investment</div><div class="m-val">HKD 15.6M</div></div>
+              <div class="meta"><div class="m-label">Duration</div><div class="m-val">24 Months</div></div>
+              <div class="meta"><div class="m-label">Model</div><div class="m-val">Equity</div></div>
+            </div>
+          </div>
+          <div class="prog-card-footer">
+            <div class="eligibility">HKSTP tenant, deep-tech, Gen AI/IoT/Green</div>
+            <button class="btn-apply" onclick="startApplication('coaccel')">Apply</button>
+          </div>
+        </div>
+        <div class="prog-card anim anim-d5">
+          <div class="prog-card-top">
+            <div class="prog-card-icon" style="background:linear-gradient(135deg,#111827,#374151);">06</div>
+            <div><h3>Elite Programme</h3><div class="stage">Scaleup | Invitation-only | Pre-IPO</div></div>
+          </div>
+          <div class="prog-card-body">
+            <p>Exclusive programme for mature startups targeting global markets. Up to 50% of R&D expenditure subsidised with IPO/M&A preparation support.</p>
+            <div class="prog-card-meta">
+              <div class="meta"><div class="m-label">R&D Subsidy</div><div class="m-val">HKD 21.5M</div></div>
+              <div class="meta"><div class="m-label">Rental</div><div class="m-val">HKD 1.5M</div></div>
+              <div class="meta"><div class="m-label">Entry</div><div class="m-val">Invite Only</div></div>
+            </div>
+          </div>
+          <div class="prog-card-footer">
+            <div class="eligibility">USD 50-100M valuation, 30+ employees</div>
+            <button class="btn-apply" style="background:var(--slate);cursor:not-allowed;">Invitation Only</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK OVERVIEW -->
+  <section class="section" style="background:#fff;">
+    <div class="section-inner">
+      <div class="section-label"><span class="line"></span>How It Works</div>
+      <h2>From idea to global scaleup — one seamless journey</h2>
+      <p class="lead">No more juggling multiple portals. Our AI identifies where you fit, checks eligibility instantly, and pre-fills your application.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;">
+        <div class="stat-card anim">
+          <div style="font-size:2rem;margin-bottom:8px;">&#128172;</div>
+          <div class="s-label">Step 1</div>
+          <div style="font-weight:700;font-size:.95rem;margin:8px 0 4px;">Talk to AI Copilot</div>
+          <p style="font-size:.82rem;color:var(--slate);">Describe your startup in natural language. The AI assesses your stage, sector, and needs in under 2 minutes.</p>
+        </div>
+        <div class="stat-card anim anim-d1">
+          <div style="font-size:2rem;margin-bottom:8px;">&#127919;</div>
+          <div class="s-label">Step 2</div>
+          <div style="font-weight:700;font-size:.95rem;margin:8px 0 4px;">Get Matched</div>
+          <p style="font-size:.82rem;color:var(--slate);">AI recommends the best programme, runs an eligibility pre-check, and explains why it's the right fit for you.</p>
+        </div>
+        <div class="stat-card anim anim-d2">
+          <div style="font-size:2rem;margin-bottom:8px;">&#128221;</div>
+          <div class="s-label">Step 3</div>
+          <div style="font-weight:700;font-size:.95rem;margin:8px 0 4px;">Apply with AI Help</div>
+          <p style="font-size:.82rem;color:var(--slate);">Smart forms pre-fill known data. AI reviews your proposal and suggests improvements before you submit.</p>
+        </div>
+        <div class="stat-card anim anim-d3">
+          <div style="font-size:2rem;margin-bottom:8px;">&#128200;</div>
+          <div class="s-label">Step 4</div>
+          <div style="font-weight:700;font-size:.95rem;margin:8px 0 4px;">Track in Real-Time</div>
+          <p style="font-size:.82rem;color:var(--slate);">Dashboard shows exactly where your application is. Automated notifications at every stage. No more black box.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo" style="margin-bottom:8px;">
+          <div class="logo-icon">H</div>
+          <div class="logo-text"><span>HKSTP</span> Portal</div>
+        </div>
+        <p>The unified admission platform for Hong Kong Science & Technology Parks Corporation. Powered by Microsoft Dynamics 365 and Copilot AI.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Programmes</h4>
+        <a href="#">Ideation</a><a href="#">Incubation</a><a href="#">Co-Development</a>
+        <a href="#">LEAP</a><a href="#">Co-Acceleration</a><a href="#">Elite</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="#">Application Guide</a><a href="#">Eligibility Checker</a>
+        <a href="#">FAQ</a><a href="#">Contact Us</a>
+      </div>
+      <div class="footer-col">
+        <h4>For Staff</h4>
+        <a href="#" onclick="showPage('crm')">D365 CRM</a><a href="#">Assessment Portal</a>
+        <a href="#">Reports</a><a href="#">Admin</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 HKSTP. Unified Portal Prototype. Powered by Microsoft Dynamics 365 + Copilot Studio.</p>
+      <p>Design Proposal — Not an official HKSTP product</p>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════ PAGE: PROGRAMMES ═══════════ -->
+<div id="page-programmes" class="page">
+  <section class="section" style="padding-top:40px;">
+    <div class="section-inner">
+      <div class="section-label"><span class="line"></span>All Programmes</div>
+      <h2>Find the right programme for your stage</h2>
+      <p class="lead">Six programmes from idea-stage to global scaleup. Use the AI matcher or browse below.</p>
+
+      <div class="prog-grid">
+        <!-- Ideation -->
+        <div class="prog-card anim">
+          <div class="prog-card-top">
+            <div class="prog-card-icon" style="background:linear-gradient(135deg,#f43f5e,#fb923c);">01</div>
+            <div>
+              <h3>Ideation Programme</h3>
+              <div class="stage">Pre-startup | Equity-free seed funding</div>
+            </div>
+          </div>
+          <div class="prog-card-body">
+            <p>Transform your innovative idea into a viable business with structured guidance, seed funding, mentorship, and access to HKSTP's ecosystem.</p>
+            <div class="prog-card-meta">
+              <div class="meta"><div class="m-label">Funding</div><div class="m-val">HKD 100K</div></div>
+              <div class="meta"><div class="m-label">Duration</div><div class="m-val">1 Year</div></div>
+              <div class="meta"><div class="m-label">Windows</div><div class="m-val">Jan/May/Sep</div></div>
+            </div>
+          </div>
+          <div class="prog-card-footer">
+            <div class="eligibility">HKID holder, 18+, innovative idea</div>
+            <button class="btn-apply" onclick="startApplication('ideation')">Apply</button>
+          </div>
+        </div>
+
+        <!-- Incubation -->
+        <div class="prog-card anim anim-d1">
+          <div class="prog-card-top">
+            <div class="prog-card-icon" style="background:linear-gradient(135deg,#2563eb,#38bdf8);">02</div>
+            <div>
+              <h3>Incubation Programme</h3>
+              <div class="stage">Early-stage | 3-year deep support</div>
+            </div>
+          </div>
+          <div class="prog-card-body">
+            <p>Develop your first solutions from technical builds through market exploration and business development to commercialisation readiness.</p>
+            <div class="prog-card-meta">
+              <div class="meta"><div class="m-label">Funding</div><div class="m-val">HKD 1.29M</div></div>
+              <div class="meta"><div class="m-label">Duration</div><div class="m-val">3 Years</div></div>
+              <div class="meta"><div class="m-label">Applications</div><div class="m-val">Year-Round</div></div>
+            </div>
+          </div>
+          <div class="prog-card-footer">
+            <div class="eligibility">HK company, &lt;5 yrs, prototype/MVP</div>
+            <button class="btn-apply" onclick="startApplication('incubation')">Apply</button>
+          </div>
+        </div>
+
+        <!-- Co-Development -->
+        <div class="prog-card anim anim-d2">
+          <div class="prog-card-top">
+            <div class="prog-card-icon" style="background:linear-gradient(135deg,#f59e0b,#fbbf24);">03</div>
+            <div>
+              <h3>Co-Development</h3>
+              <div class="stage">Partner-driven | Co-ideation & co-incubation</div>
+            </div>
+          </div>
+          <div class="prog-card-body">
+            <p>Pair with corporate partners for co-creation, go-to-market support, and dedicated mentorship through the Co-Ideation or Co-Incubation tracks.</p>
+            <div class="prog-card-meta">
+              <div class="meta"><div class="m-label">Tracks</div><div class="m-val">2 Tracks</div></div>
+              <div class="meta"><div class="m-label">Model</div><div class="m-val">Corporate</div></div>
+              <div class="meta"><div class="m-label">Review</div><div class="m-val">~3 Months</div></div>
+            </div>
+          </div>
+          <div class="prog-card-footer">
+            <div class="eligibility">Open to early-stage startups</div>
+            <button class="btn-apply" onclick="startApplication('codev')">Apply</button>
+          </div>
+        </div>
+
+        <!-- LEAP -->
+        <div class="prog-card anim anim-d3">
+          <div class="prog-card-top">
+            <div class="prog-card-icon" style="background:linear-gradient(135deg,#059669,#34d399);">04</div>
+            <div>
+              <h3>LEAP Acceleration</h3>
+              <div class="stage">Growth-stage | Global expansion</div>
+            </div>
+          </div>
+          <div class="prog-card-body">
+            <p>Accelerate onto the global stage with HKD 4.7M programme value, access to 70+ corporate partners, and GBA/ASEAN market expansion support.</p>
+            <div class="prog-card-meta">
+              <div class="meta"><div class="m-label">Value</div><div class="m-val">HKD 4.7M</div></div>
+              <div class="meta"><div class="m-label">Cash</div><div class="m-val">HKD 1.2M</div></div>
+              <div class="meta"><div class="m-label">Equity</div><div class="m-val">5% Option</div></div>
+            </div>
+          </div>
+          <div class="prog-card-footer">
+            <div class="eligibility">HKSTP tenant, ready-for-market product</div>
+            <button class="btn-apply" onclick="startApplication('leap')">Apply</button>
+          </div>
+        </div>
+
+        <!-- Co-Acceleration -->
+        <div class="prog-card anim anim-d4">
+          <div class="prog-card-top">
+            <div class="prog-card-icon" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa);">05</div>
+            <div>
+              <h3>Co-Acceleration</h3>
+              <div class="stage">Deep-tech | Public-Private fund</div>
+            </div>
+          </div>
+          <div class="prog-card-body">
+            <p>HK's first PPP I&T fund. Co-invests with top-tier LPs across Generative AI, Intelligent Connected Systems, and Sustainability.</p>
+            <div class="prog-card-meta">
+              <div class="meta"><div class="m-label">Investment</div><div class="m-val">HKD 15.6M</div></div>
+              <div class="meta"><div class="m-label">Duration</div><div class="m-val">24 Months</div></div>
+              <div class="meta"><div class="m-label">Model</div><div class="m-val">Equity</div></div>
+            </div>
+          </div>
+          <div class="prog-card-footer">
+            <div class="eligibility">HKSTP tenant, deep-tech, Gen AI/IoT/Green</div>
+            <button class="btn-apply" onclick="startApplication('coaccel')">Apply</button>
+          </div>
+        </div>
+
+        <!-- Elite -->
+        <div class="prog-card anim anim-d5">
+          <div class="prog-card-top">
+            <div class="prog-card-icon" style="background:linear-gradient(135deg,#111827,#374151);">06</div>
+            <div>
+              <h3>Elite Programme</h3>
+              <div class="stage">Scaleup | Invitation-only | Pre-IPO</div>
+            </div>
+          </div>
+          <div class="prog-card-body">
+            <p>Exclusive programme for mature startups targeting global markets. Up to 50% of R&D expenditure subsidised with IPO/M&A preparation support.</p>
+            <div class="prog-card-meta">
+              <div class="meta"><div class="m-label">R&D Subsidy</div><div class="m-val">HKD 21.5M</div></div>
+              <div class="meta"><div class="m-label">Rental</div><div class="m-val">HKD 1.5M</div></div>
+              <div class="meta"><div class="m-label">Entry</div><div class="m-val">Invite Only</div></div>
+            </div>
+          </div>
+          <div class="prog-card-footer">
+            <div class="eligibility">USD 50-100M valuation, 30+ employees</div>
+            <button class="btn-apply" style="background:var(--slate);cursor:not-allowed;">Invitation Only</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ PAGE: APPLICATION ═══════════ -->
+<div id="page-apply" class="page">
+  <div class="app-container">
+    <!-- Stepper -->
+    <div class="app-stepper">
+      <div class="step-line"><div class="step-line-fill" id="step-fill" style="width:25%;"></div></div>
+      <div class="step done" id="step-1"><div class="step-dot">&#10003;</div><div class="step-label">AI Match</div></div>
+      <div class="step active" id="step-2"><div class="step-dot">2</div><div class="step-label">Company Info</div></div>
+      <div class="step" id="step-3"><div class="step-dot">3</div><div class="step-label">Proposal</div></div>
+      <div class="step" id="step-4"><div class="step-dot">4</div><div class="step-label">Review</div></div>
+    </div>
+
+    <!-- AI recommendation banner -->
+    <div style="background:linear-gradient(135deg,rgba(0,201,167,.08),rgba(139,92,246,.06));border:1px solid rgba(0,201,167,.2);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:16px;">
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--teal);display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:800;font-size:1.1rem;flex-shrink:0;">AI</div>
+      <div>
+        <div style="font-weight:700;font-size:.9rem;margin-bottom:2px;">Copilot Recommendation: <span style="color:var(--teal);" id="rec-programme">Incubation Programme</span></div>
+        <div style="font-size:.82rem;color:var(--slate);">Based on your conversation, you have a working prototype and a team of 4. The Incubation Programme provides up to HKD 1.29M over 3 years with dedicated office space.</div>
+      </div>
+      <div class="ai-badge" style="flex-shrink:0;">&#10003; Eligible</div>
+    </div>
+
+    <!-- Form: Company Info -->
+    <div class="form-section anim">
+      <h3>Company Information</h3>
+      <div class="fs-desc">Fields marked with <span class="ai-badge">AI Pre-filled</span> were populated from your Copilot conversation. Verify and edit as needed.</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Company Name</label>
+          <input type="text" value="NovaTech Solutions Ltd" class="prefilled">
+        </div>
+        <div class="form-group">
+          <label>Business Registration No. <span class="ai-badge">AI Pre-filled</span></label>
+          <input type="text" placeholder="e.g. 12345678-000-00-00-0">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Incorporation Date <span class="ai-badge">AI Pre-filled</span></label>
+          <input type="date" value="2024-03-15" class="prefilled">
+        </div>
+        <div class="form-group">
+          <label>Technology Sector</label>
+          <select class="prefilled">
+            <option>Information & Communication Technology (ICT)</option>
+            <option>Electronics</option>
+            <option>Green Technology</option>
+            <option>Precision Engineering</option>
+            <option>Biomedical</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full-Time Team Size <span class="ai-badge">AI Pre-filled</span></label>
+          <input type="number" value="4" class="prefilled">
+        </div>
+        <div class="form-group">
+          <label>R&D Staff Percentage</label>
+          <input type="text" value="75%" class="prefilled">
+        </div>
+      </div>
+      <div class="form-row" style="grid-template-columns:1fr;">
+        <div class="form-group">
+          <label>Founding Team Share Ownership (%)</label>
+          <input type="text" value="100% — 2 co-founders" class="prefilled">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section anim anim-d1">
+      <h3>Team Members</h3>
+      <div class="fs-desc">Add your founding team. Data carries forward to future programme applications — enter once, use everywhere.</div>
+      <div style="background:var(--ghost);border-radius:var(--radius-sm);padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;">
+        <div class="avatar" style="width:40px;height:40px;font-size:.72rem;">JC</div>
+        <div>
+          <div style="font-weight:600;font-size:.88rem;">James Chen</div>
+          <div style="font-size:.76rem;color:var(--slate);">CEO & Co-founder | james@novatech.hk</div>
+        </div>
+        <span class="ai-badge" style="margin-left:auto;">Primary Contact</span>
+      </div>
+      <div style="background:var(--ghost);border-radius:var(--radius-sm);padding:16px;display:flex;align-items:center;gap:14px;">
+        <div class="avatar" style="width:40px;height:40px;font-size:.72rem;background:linear-gradient(135deg,var(--teal),#38bdf8);">LW</div>
+        <div>
+          <div style="font-weight:600;font-size:.88rem;">Lisa Wong</div>
+          <div style="font-size:.76rem;color:var(--slate);">CTO & Co-founder | lisa@novatech.hk</div>
+        </div>
+      </div>
+      <button style="margin-top:12px;background:none;color:var(--teal);font-size:.82rem;font-weight:600;padding:8px 0;">+ Add Team Member</button>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-outline" onclick="showPage('programmes')">Back</button>
+      <button class="btn-solid" onclick="showPage('dashboard')">Save & Continue &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE: DASHBOARD ═══════════ -->
+<div id="page-dashboard" class="page">
+  <div class="dash">
+    <div class="dash-header anim">
+      <div>
+        <h2>Welcome back, James</h2>
+        <div class="greeting">Here's the latest on your HKSTP applications and milestones.</div>
+      </div>
+      <button class="btn-primary" onclick="showPage('apply')" style="font-size:.82rem;padding:10px 24px;">
+        + New Application
+      </button>
+    </div>
+
+    <div class="dash-stats">
+      <div class="stat-card anim anim-d1">
+        <div class="s-label">Active Applications</div>
+        <div class="s-value">2</div>
+        <div class="s-change up">+1 this quarter</div>
+      </div>
+      <div class="stat-card anim anim-d2">
+        <div class="s-label">Current Programme</div>
+        <div class="s-value" style="font-size:1.2rem;">Incubation</div>
+        <div class="s-change">Year 1 of 3</div>
+      </div>
+      <div class="stat-card anim anim-d3">
+        <div class="s-label">Funding Received</div>
+        <div class="s-value">$430K</div>
+        <div class="s-change up">Tranche 2 of 3</div>
+      </div>
+      <div class="stat-card anim anim-d4">
+        <div class="s-label">Next Milestone</div>
+        <div class="s-value" style="font-size:1.1rem;">14 Apr</div>
+        <div class="s-change" style="color:var(--amber);">Q2 Progress Report</div>
+      </div>
+    </div>
+
+    <!-- Pipeline -->
+    <div class="pipeline anim anim-d2">
+      <div class="pipeline-header">
+        <h3>Application Pipeline</h3>
+        <div class="ai-badge" style="font-size:.7rem;">&#9889; D365 CRM Synced</div>
+      </div>
+      <div class="pipeline-body">
+        <table class="pipeline-table">
+          <thead>
+            <tr><th>Application</th><th>Programme</th><th>Submitted</th><th>Status</th><th>Next Step</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;">APP-2025-00847</td>
+              <td>Incubation Programme</td>
+              <td>12 Jan 2025</td>
+              <td><span class="status-badge status-approved"><span class="dot"></span>Approved</span></td>
+              <td>Milestone 3 due 14 Apr</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">APP-2026-01203</td>
+              <td>LEAP Acceleration</td>
+              <td>28 Mar 2026</td>
+              <td><span class="status-badge status-panel"><span class="dot"></span>Panel Review</span></td>
+              <td>Panel meeting 18 Apr</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">APP-2026-01350</td>
+              <td>InnoCell Accommodation</td>
+              <td>2 Apr 2026</td>
+              <td><span class="status-badge status-review"><span class="dot"></span>Under Review</span></td>
+              <td>Est. 2-3 weeks</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">TENANCY-2025-0091</td>
+              <td>Science Park Office</td>
+              <td>15 Jan 2025</td>
+              <td><span class="status-badge status-approved"><span class="dot"></span>Active</span></td>
+              <td>ABU due 30 Jun</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- AI Insights -->
+    <div style="background:linear-gradient(135deg,rgba(139,92,246,.04),rgba(0,201,167,.04));border:1px solid rgba(139,92,246,.12);border-radius:var(--radius);padding:24px;margin-bottom:24px;" class="anim anim-d3">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--violet),var(--teal));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:.72rem;">AI</div>
+        <div style="font-weight:700;font-size:.9rem;">Copilot Insights</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;">
+        <div style="background:rgba(255,255,255,.7);border-radius:var(--radius-sm);padding:16px;">
+          <div style="font-size:.72rem;color:var(--violet);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Graduation Alert</div>
+          <p style="font-size:.84rem;color:var(--text);">Your Incubation metrics suggest you may be ready for LEAP. Revenue grew 340% QoQ and your team expanded to 12. <strong style="color:var(--teal);">Your LEAP application is already in progress.</strong></p>
+        </div>
+        <div style="background:rgba(255,255,255,.7);border-radius:var(--radius-sm);padding:16px;">
+          <div style="font-size:.72rem;color:var(--amber);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Upcoming Deadline</div>
+          <p style="font-size:.84rem;color:var(--text);">Your Q2 milestone report is due in <strong>8 days</strong>. This triggers your third funding tranche (HKD 430K). Upload your progress report to stay on track.</p>
+        </div>
+        <div style="background:rgba(255,255,255,.7);border-radius:var(--radius-sm);padding:16px;">
+          <div style="font-size:.72rem;color:var(--teal);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Recommendation</div>
+          <p style="font-size:.84rem;color:var(--text);">Based on your AI/IoT focus, the new <strong>Co-Acceleration Programme</strong> (HKD 15.6M) is accepting applications. Sector match: 94%. Want me to start your application?</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE: CRM (STAFF) ═══════════ -->
+<div id="page-crm" class="page">
+  <div class="dash">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;" class="anim">
+      <div style="background:linear-gradient(135deg,#0078d4,#243a5e);padding:6px 14px;border-radius:6px;display:flex;align-items:center;gap:6px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="#fff"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+        <span style="color:#fff;font-size:.78rem;font-weight:600;">Dynamics 365</span>
+      </div>
+      <div style="font-size:.78rem;color:var(--slate);font-weight:500;">HKSTP CRM | Internal Staff View</div>
+    </div>
+    <div class="dash-header anim">
+      <div>
+        <h2>Admission Pipeline</h2>
+        <div class="greeting">360-degree view of all companies across programmes. Powered by Microsoft Dataverse.</div>
+      </div>
+    </div>
+
+    <!-- CRM Stats -->
+    <div class="dash-stats">
+      <div class="stat-card anim anim-d1" style="border-left:3px solid var(--coral);">
+        <div class="s-label">New Applications</div>
+        <div class="s-value">47</div>
+        <div class="s-change" style="color:var(--coral);">12 pending MAC check</div>
+      </div>
+      <div class="stat-card anim anim-d2" style="border-left:3px solid var(--amber);">
+        <div class="s-label">Due Diligence</div>
+        <div class="s-value">23</div>
+        <div class="s-change" style="color:var(--amber);">8 meetings this week</div>
+      </div>
+      <div class="stat-card anim anim-d3" style="border-left:3px solid var(--sky);">
+        <div class="s-label">Panel Review</div>
+        <div class="s-value">15</div>
+        <div class="s-change" style="color:var(--sky);">Next panel: 18 Apr</div>
+      </div>
+      <div class="stat-card anim anim-d4" style="border-left:3px solid var(--teal);">
+        <div class="s-label">Approved (YTD)</div>
+        <div class="s-value">68</div>
+        <div class="s-change up">+22% vs. last year</div>
+      </div>
+    </div>
+
+    <!-- CRM Pipeline Table -->
+    <div class="pipeline anim anim-d2">
+      <div class="pipeline-header">
+        <h3>All Applications — Cross-Programme View</h3>
+        <div style="display:flex;gap:8px;">
+          <select style="background:var(--ghost);border:1px solid var(--ghost2);border-radius:6px;padding:6px 12px;font-size:.78rem;">
+            <option>All Programmes</option><option>Ideation</option><option>Incubation</option><option>LEAP</option><option>Co-Acceleration</option><option>Elite</option>
+          </select>
+          <select style="background:var(--ghost);border:1px solid var(--ghost2);border-radius:6px;padding:6px 12px;font-size:.78rem;">
+            <option>All Stages</option><option>MAC Check</option><option>Due Diligence</option><option>Panel Review</option><option>Approved</option>
+          </select>
+        </div>
+      </div>
+      <div class="pipeline-body">
+        <table class="pipeline-table">
+          <thead>
+            <tr><th>Company</th><th>Programme</th><th>Stage</th><th>Assigned To</th><th>Days in Stage</th><th>Copilot Score</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>NovaTech Solutions</strong><br><span style="font-size:.72rem;color:var(--slate);">ICT | 4 staff | LEAP applicant</span></td>
+              <td>LEAP</td>
+              <td><span class="status-badge status-panel"><span class="dot"></span>Panel Review</span></td>
+              <td>Sarah Lam</td>
+              <td>5</td>
+              <td><span style="color:var(--teal);font-weight:700;">92/100</span></td>
+            </tr>
+            <tr>
+              <td><strong>GreenWave Energy</strong><br><span style="font-size:.72rem;color:var(--slate);">GreenTech | 8 staff | New</span></td>
+              <td>Incubation</td>
+              <td><span class="status-badge status-review"><span class="dot"></span>Due Diligence</span></td>
+              <td>Kevin Ho</td>
+              <td>12</td>
+              <td><span style="color:var(--amber);font-weight:700;">78/100</span></td>
+            </tr>
+            <tr>
+              <td><strong>QuantumLeap AI</strong><br><span style="font-size:.72rem;color:var(--slate);">AI/ML | 2 staff | Fresh idea</span></td>
+              <td>Ideation</td>
+              <td><span class="status-badge status-review"><span class="dot"></span>MAC Check</span></td>
+              <td>Amy Tse</td>
+              <td>3</td>
+              <td><span style="color:var(--teal);font-weight:700;">85/100</span></td>
+            </tr>
+            <tr>
+              <td><strong>BioSense Diagnostics</strong><br><span style="font-size:.72rem;color:var(--slate);">BioMed | 22 staff | Scaling</span></td>
+              <td>Co-Acceleration</td>
+              <td><span class="status-badge status-panel"><span class="dot"></span>Panel Review</span></td>
+              <td>David Yip</td>
+              <td>8</td>
+              <td><span style="color:var(--teal);font-weight:700;">95/100</span></td>
+            </tr>
+            <tr>
+              <td><strong>RoboVision HK</strong><br><span style="font-size:.72rem;color:var(--slate);">Robotics | 15 staff | Growth</span></td>
+              <td>LEAP</td>
+              <td><span class="status-badge status-approved"><span class="dot"></span>Approved</span></td>
+              <td>Sarah Lam</td>
+              <td>0</td>
+              <td><span style="color:var(--teal);font-weight:700;">89/100</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- D365 CRM Features -->
+    <div class="crm-section anim anim-d3">
+      <h3>Microsoft Dynamics 365 CRM — Capabilities</h3>
+      <div class="crm-sub">Connected to Dataverse. All portals, all programmes, all teams — one system of record.</div>
+      <div class="crm-grid">
+        <div class="crm-tile">
+          <div class="ct-icon">&#128101;</div>
+          <h4>360&deg; Company View</h4>
+          <p>Full history: applications, assessments, milestones, tenancy, interactions. One record per company across all programmes.</p>
+          <div class="ms-tag">Dataverse</div>
+        </div>
+        <div class="crm-tile">
+          <div class="ct-icon">&#9889;</div>
+          <h4>Copilot for Staff</h4>
+          <p>AI summarises applicant profiles, flags risks, drafts assessment notes, and suggests next actions for case managers.</p>
+          <div class="ms-tag">Copilot Studio</div>
+        </div>
+        <div class="crm-tile">
+          <div class="ct-icon">&#128640;</div>
+          <h4>Pipeline Automation</h4>
+          <p>Auto-advance stages, schedule panel meetings, send notifications, and trigger milestone reminders via workflows.</p>
+          <div class="ms-tag">Power Automate</div>
+        </div>
+        <div class="crm-tile">
+          <div class="ct-icon">&#128202;</div>
+          <h4>Executive Dashboards</h4>
+          <p>Real-time analytics: intake funnel, conversion rates, programme performance, diversity metrics, and funding deployment.</p>
+          <div class="ms-tag">Power BI</div>
+        </div>
+        <div class="crm-tile">
+          <div class="ct-icon">&#128196;</div>
+          <h4>Document Hub</h4>
+          <p>Business proposals, assessment reports, and legal agreements auto-linked to company records with version control.</p>
+          <div class="ms-tag">SharePoint</div>
+        </div>
+        <div class="crm-tile">
+          <div class="ct-icon">&#128274;</div>
+          <h4>SSO & Identity</h4>
+          <p>Single sign-on for external applicants and internal staff. Supports external identity providers for startup convenience.</p>
+          <div class="ms-tag">Entra ID</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Old floating FAB removed — copilot now pins from hero on scroll -->
+
+<!-- ═══════════ JAVASCRIPT ═══════════ -->
+<script>
+// ═══ PAGE ROUTING ═══
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.topnav-links a').forEach(a => a.classList.remove('active'));
+  const idx = {home:0,programmes:1,apply:2,dashboard:3,crm:4};
+  if (idx[page] !== undefined) document.querySelectorAll('.topnav-links a')[idx[page]].classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ═══ COPILOT SCROLL PIN ═══
+let copilotPinned = false;
+let copilotMinimised = false;
+const wrapper = document.getElementById('copilot-wrapper');
+const heroSection = document.getElementById('hero-section');
+
+window.addEventListener('scroll', function() {
+  if (!heroSection || !wrapper) return;
+  const heroBottom = heroSection.getBoundingClientRect().bottom;
+
+  if (heroBottom < 120 && !copilotPinned) {
+    // Scrolled past hero — pin and minimise
+    copilotPinned = true;
+    copilotMinimised = true;
+    wrapper.classList.remove('in-hero');
+    wrapper.classList.add('pinned', 'minimised');
+    dismissVoiceHint();
+  } else if (heroBottom >= 120 && copilotPinned) {
+    // Scrolled back to hero — restore
+    copilotPinned = false;
+    copilotMinimised = false;
+    wrapper.classList.remove('pinned', 'minimised');
+    wrapper.classList.add('in-hero');
+    // Re-show voice hint if not dismissed by user clicking mic
+    const hint = document.getElementById('voice-hint');
+    if (hint && !hint.dataset.userDismissed) {
+      hint.classList.remove('hidden');
+    }
+  }
+}, { passive: true });
+
+function expandCopilot() {
+  if (!copilotPinned) return; // only works in pinned mode
+  if (copilotMinimised) {
+    copilotMinimised = false;
+    wrapper.classList.remove('minimised');
+  } else {
+    copilotMinimised = true;
+    wrapper.classList.add('minimised');
+  }
+}
+
+function startApplication(prog) {
+  const names = {
+    ideation:'Ideation Programme', incubation:'Incubation Programme',
+    codev:'Co-Development Programme', leap:'LEAP Acceleration', coaccel:'Co-Acceleration Programme'
+  };
+  document.getElementById('rec-programme').textContent = names[prog] || 'Incubation Programme';
+  showPage('apply');
+}
+
+// ═══ TYPING DEMO ANIMATION ═══
+const typingDemos = [
+  {
+    text: "We are an AI glasses company. Our mission is to make AR accessible for everyday life. Our status: working prototype, 6-person team in HK, seeking incubation...",
+    label: "English — company + mission + status"
+  },
+  {
+    text: "我哋係一間做生物科技嘅公司。使命係用AI加速藥物研發。現狀：已有兩項專利，8人團隊，Pre-Series A階段...",
+    label: "Cantonese — company + mission + status"
+  },
+  {
+    text: "We build autonomous delivery robots. Our mission is zero-emission last-mile logistics. Status: 3 pilot clients, HKD 500K revenue, team of 12...",
+    label: "English — robotics startup"
+  },
+  {
+    text: "我们是一家绿色能源初创公司。使命是让清洁能源人人可负担。现状：MVP已上线，12人团队，正在寻找加速器...",
+    label: "Chinese — green energy startup"
+  },
+  {
+    text: "BioSense Diagnostics. Mission: rapid point-of-care diagnostics for rural clinics. Status: prototype validated, 4 team members, applying for incubation funding...",
+    label: "English — biomedical startup"
+  },
+  {
+    text: "我哋做智慧農業。使命係用IoT同AI提升本地農業效率。現狀：同兩個農場合作緊，團隊5人，想申請IDEATION...",
+    label: "Cantonese — agritech startup"
+  }
+];
+
+let typingDemoIndex = 0;
+let typingCharIndex = 0;
+let typingTimer = null;
+let typingDemoActive = true;
+let typingPauseTimer = null;
+
+function startTypingDemo() {
+  if (!typingDemoActive) return;
+  const input = document.getElementById('hero-chat-input');
+  if (!input || document.activeElement === input) return;
+
+  const demo = typingDemos[typingDemoIndex];
+  typingCharIndex = 0;
+  input.value = '';
+  input.style.color = 'rgba(255,255,255,.55)';
+  input.placeholder = '';
+
+  typeNextChar();
+}
+
+function typeNextChar() {
+  if (!typingDemoActive) return;
+  const input = document.getElementById('hero-chat-input');
+  if (!input || document.activeElement === input) return;
+
+  const demo = typingDemos[typingDemoIndex];
+
+  if (typingCharIndex < demo.text.length) {
+    // Variable typing speed for realism
+    const char = demo.text[typingCharIndex];
+    const isCJK = /[\u4e00-\u9fff\u3400-\u4dbf]/.test(char);
+    const delay = isCJK ? 80 + Math.random() * 60 : 30 + Math.random() * 50;
+
+    input.value = demo.text.substring(0, typingCharIndex + 1);
+    typingCharIndex++;
+    typingTimer = setTimeout(typeNextChar, delay);
+  } else {
+    // Pause, then clear and move to next demo
+    typingPauseTimer = setTimeout(() => {
+      input.value = '';
+      typingDemoIndex = (typingDemoIndex + 1) % typingDemos.length;
+      setTimeout(startTypingDemo, 400);
+    }, 2800);
+  }
+}
+
+function stopTypingDemo() {
+  typingDemoActive = false;
+  clearTimeout(typingTimer);
+  clearTimeout(typingPauseTimer);
+  const input = document.getElementById('hero-chat-input');
+  if (input) {
+    input.value = '';
+    input.style.color = '#fff';
+    input.placeholder = 'We are... Our mission is... Our status is...';
+  }
+}
+
+// Start demo after page load
+setTimeout(startTypingDemo, 1500);
+
+// ═══ VOICE UI ═══
+let voiceLang = 'en';
+let voiceLangLabel = 'English';
+let isRecording = false;
+
+const voiceLangMap = {
+  en: { label: 'English', status: 'Listening in English...' },
+  zh: { label: 'Chinese', status: '\u6b63\u5728\u8046\u542c\u666e\u901a\u8bdd...' },
+  yue: { label: 'Cantonese', status: '\u6b63\u5728\u8046\u807d\u5ee3\u6771\u8a71...' }
+};
+
+// Copilot message translations
+const copilotMessages = {
+  en: {
+    intro: "Hi! I'm your HKSTP AI Copilot. I can match you to the right programme, check your eligibility, and guide your application \u2014 all in one conversation.",
+    cta: "Tell me about your startup \u2014 describe who you are, your mission, and your current status. Or try one of these:",
+    chips: [
+      { label: "Step-by-step application guide", prompt: "Walk me through the application process step by step" },
+      { label: "What do I need to prepare?", prompt: "What documents and materials do I need to prepare for my application?" },
+      { label: "Help me find the right programme", prompt: "Which programme is the best fit for my startup?" },
+      { label: "Check my eligibility", prompt: "What are the eligibility requirements and how do I check if I qualify?" }
+    ],
+    placeholder: "We are... Our mission is... Our status is..."
+  },
+  zh: {
+    intro: "\u4f60\u597d\uff01\u6211\u662f\u4f60\u7684 HKSTP AI \u52a9\u624b\u3002\u6211\u53ef\u4ee5\u5e2e\u4f60\u5339\u914d\u6700\u5408\u9002\u7684\u8ba1\u5212\u3001\u68c0\u67e5\u8d44\u683c\u3001\u5e76\u5168\u7a0b\u6307\u5bfc\u4f60\u7684\u7533\u8bf7 \u2014 \u4e00\u6b21\u5bf9\u8bdd\u641e\u5b9a\u3002",
+    cta: "\u8bf7\u544a\u8bc9\u6211\u4f60\u7684\u521d\u521b\u516c\u53f8 \u2014 \u63cf\u8ff0\u4f60\u4eec\u662f\u8c01\u3001\u4f60\u4eec\u7684\u4f7f\u547d\u548c\u73b0\u72b6\u3002\u6216\u8005\u8bd5\u8bd5\u4ee5\u4e0b\u9009\u9879\uff1a",
+    chips: [
+      { label: "\u7533\u8bf7\u6d41\u7a0b\u6307\u5357", prompt: "\u8bf7\u4e00\u6b65\u6b65\u5e26\u6211\u4e86\u89e3\u7533\u8bf7\u6d41\u7a0b" },
+      { label: "\u6211\u9700\u8981\u51c6\u5907\u4ec0\u4e48\uff1f", prompt: "\u7533\u8bf7\u9700\u8981\u51c6\u5907\u54ea\u4e9b\u6587\u4ef6\u548c\u6750\u6599\uff1f" },
+      { label: "\u5e2e\u6211\u627e\u5408\u9002\u7684\u8ba1\u5212", prompt: "\u54ea\u4e2a\u8ba1\u5212\u6700\u9002\u5408\u6211\u7684\u521d\u521b\u516c\u53f8\uff1f" },
+      { label: "\u68c0\u67e5\u6211\u7684\u8d44\u683c", prompt: "\u8d44\u683c\u8981\u6c42\u662f\u4ec0\u4e48\uff1f\u6211\u600e\u4e48\u77e5\u9053\u81ea\u5df1\u7b26\u4e0d\u7b26\u5408\uff1f" }
+    ],
+    placeholder: "\u6211\u4eec\u662f...\u6211\u4eec\u7684\u4f7f\u547d\u662f...\u73b0\u72b6\u662f..."
+  },
+  yue: {
+    intro: "\u4f60\u597d\uff01\u6211\u4fc2\u4f60\u561e HKSTP AI \u52a9\u624b\u3002\u6211\u53ef\u4ee5\u5e6b\u4f60\u914d\u5c0d\u6700\u5408\u9069\u561e\u8a08\u5283\u3001\u6aa2\u67e5\u8cc7\u683c\u3001\u540c\u57cb\u5168\u7a0b\u6307\u5c0e\u4f60\u7533\u8acb \u2014 \u4e00\u6b21\u50be\u8a08\u641e\u5b9a\u3002",
+    cta: "\u8acb\u8b1b\u4e0b\u4f60\u561e\u521d\u5275\u516c\u53f8 \u2014 \u4f60\u5730\u4fc2\u505a\u4e9b\u54a9\u3001\u4f7f\u547d\u4fc2\u4e9b\u54a9\u3001\u540c\u57cb\u4f9d\u5bb6\u73fe\u72b6\u3002\u6216\u8005\u8a66\u4e0b\u4ee5\u4e0b\u9078\u9805\uff1a",
+    chips: [
+      { label: "\u7533\u8acb\u6d41\u7a0b\u6307\u5357", prompt: "\u8acb\u4e00\u6b65\u6b65\u5e36\u6211\u4e86\u89e3\u7533\u8acb\u6d41\u7a0b" },
+      { label: "\u6211\u9700\u8981\u6e96\u5099\u4e9b\u54a9\uff1f", prompt: "\u7533\u8acb\u9700\u8981\u6e96\u5099\u4e9b\u54a9\u6587\u4ef6\u540c\u6750\u6599\uff1f" },
+      { label: "\u5e6b\u6211\u63f4\u5408\u9069\u561e\u8a08\u5283", prompt: "\u908a\u500b\u8a08\u5283\u6700\u9002\u5408\u6211\u561e\u521d\u5275\u516c\u53f8\uff1f" },
+      { label: "\u6aa2\u67e5\u6211\u561e\u8cc7\u683c", prompt: "\u8cc7\u683c\u8981\u6c42\u4fc2\u4e9b\u54a9\uff1f\u6211\u9ede\u77e5\u9053\u81ea\u5df1\u7b26\u5514\u7b26\u5408\uff1f" }
+    ],
+    placeholder: "\u6211\u5730\u4fc2...\u6211\u5730\u561e\u4f7f\u547d\u4fc2...\u73fe\u72c0\u4fc2..."
+  }
+};
+
+const chipIcons = [
+  '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;opacity:.6;"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2Z"/><path d="M9 12h6M9 16h6"/></svg>',
+  '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;opacity:.6;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg>',
+  '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;opacity:.6;"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>',
+  '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;opacity:.6;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>'
+];
+
+// Switch copilot language from header pills — re-renders messages
+function switchCopilotLang(lang, el) {
+  voiceLang = lang;
+  voiceLangLabel = voiceLangMap[lang].label;
+  document.querySelectorAll('.lang-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+
+  // Re-render chat body with translated messages
+  const msgs = copilotMessages[lang];
+  const body = document.getElementById('hero-chat-body');
+  if (!body) return;
+
+  let chipsHtml = '';
+  msgs.chips.forEach((chip, i) => {
+    chipsHtml += '<button class="cta-chip" onclick="fillPrompt(\'' + chip.prompt.replace(/'/g, "\\'") + '\')">' +
+      chipIcons[i] + ' ' + chip.label + '</button>';
+  });
+
+  body.innerHTML =
+    '<div class="chat-msg ai" style="animation:msgIn .3s ease both;">' +
+      '<div class="sender">HKSTP Copilot</div>' + msgs.intro +
+    '</div>' +
+    '<div class="chat-msg ai" style="animation:msgIn .3s ease .15s both;">' +
+      '<div class="sender">HKSTP Copilot</div>' + msgs.cta +
+    '</div>' +
+    '<div class="hero-cta-prompts" style="display:flex;flex-wrap:wrap;gap:8px;padding:4px 0;animation:msgIn .3s ease .3s both;">' +
+      chipsHtml +
+    '</div>';
+
+  // Update input placeholder
+  const input = document.getElementById('hero-chat-input');
+  if (input) input.placeholder = msgs.placeholder;
+}
+
+function dismissVoiceHint(permanent) {
+  const hint = document.getElementById('voice-hint');
+  if (hint && !hint.classList.contains('hidden')) {
+    hint.classList.add('hidden');
+    if (permanent) hint.dataset.userDismissed = 'true';
+  }
+}
+
+function startVoiceRecording() {
+  dismissVoiceHint(true);
+
+  stopTypingDemo();
+  isRecording = true;
+  const btn = document.getElementById('voice-btn');
+  const status = document.getElementById('voice-status');
+  const statusTextEl = document.getElementById('voice-status-text');
+
+  btn.classList.add('recording');
+  status.classList.add('active');
+  statusTextEl.textContent = voiceLangMap[voiceLang].status;
+
+  // Simulate voice input after a delay
+  const voiceSimulations = {
+    en: "Walk me through the application process step by step. What documents do I need to prepare?",
+    zh: "\u8bf7\u4e00\u6b65\u6b65\u5e26\u6211\u4e86\u89e3\u7533\u8bf7\u6d41\u7a0b\u3002\u6211\u9700\u8981\u51c6\u5907\u54ea\u4e9b\u6750\u6599\uff1f",
+    yue: "\u8acb\u4e00\u6b65\u6b65\u5e36\u6211\u4e86\u89e3\u7533\u8acb\u6d41\u7a0b\u3002\u6211\u9700\u8981\u6e96\u5099\u4e9b\u54a9\u6750\u6599\uff1f"
+  };
+
+  setTimeout(() => {
+    const input = document.getElementById('hero-chat-input');
+    const simText = voiceSimulations[voiceLang];
+    let i = 0;
+    input.value = '';
+    input.style.color = '#fff';
+    input.placeholder = '';
+
+    const voiceType = setInterval(() => {
+      if (i < simText.length) {
+        input.value = simText.substring(0, i + 1);
+        i++;
+      } else {
+        clearInterval(voiceType);
+        isRecording = false;
+        btn.classList.remove('recording');
+        status.classList.remove('active');
+        setTimeout(() => sendChat(), 600);
+      }
+    }, 35);
+  }, 1800);
+}
+
+// ═══ FILL PROMPT FROM CTA CHIPS ═══
+function fillPrompt(text) {
+  stopTypingDemo();
+  const input = document.getElementById('hero-chat-input');
+  if (input) {
+    input.value = text;
+    input.style.color = '#fff';
+    input.focus();
+  }
+}
+
+// ═══ HERO CHAT ═══
+function sendChat() {
+  stopTypingDemo();
+  const input = document.getElementById('hero-chat-input');
+  if (!input.value.trim()) return;
+  const body = document.getElementById('hero-chat-body');
+
+  // Stop any voice recording
+  isRecording = false;
+  document.getElementById('voice-btn').classList.remove('recording');
+  document.getElementById('voice-status').classList.remove('active');
+
+  const userMsg = document.createElement('div');
+  userMsg.className = 'chat-msg user';
+  userMsg.textContent = input.value;
+  body.appendChild(userMsg);
+
+  const val = input.value.toLowerCase();
+  input.value = '';
+  input.style.color = '#fff';
+  body.scrollTop = body.scrollHeight;
+
+  // Show typing indicator
+  const typingEl = document.createElement('div');
+  typingEl.className = 'chat-msg ai';
+  typingEl.innerHTML = '<div class="sender">HKSTP Copilot</div><span style="opacity:.5;">Analysing your startup profile</span><span class="typing-cursor"></span>';
+  body.appendChild(typingEl);
+  body.scrollTop = body.scrollHeight;
+
+  setTimeout(() => {
+    body.removeChild(typingEl);
+
+    const aiMsg = document.createElement('div');
+    aiMsg.className = 'chat-msg ai';
+    let response = '';
+    let options = [];
+
+    // Smart matching based on content
+    const hasGlasses = val.includes('glass') || val.includes('眼鏡') || val.includes('眼镜');
+    const hasAI = val.includes('ai') || val.includes('智能') || val.includes('人工');
+    const hasPrototype = val.includes('prototype') || val.includes('mvp') || val.includes('原型') || val.includes('product') || val.includes('產品') || val.includes('产品');
+    const hasRevenue = val.includes('revenue') || val.includes('收入') || val.includes('客戶') || val.includes('客户') || val.includes('customer');
+    const hasTeam = val.match(/(\d+)\s*(人|people|staff|engineer|team|member)/i);
+    const hasIdea = val.includes('idea') || val.includes('concept') || val.includes('想法') || val.includes('概念') || val.includes('early');
+    const hasCanto = /[\u4e00-\u9fff]/.test(val) && (val.includes('嘅') || val.includes('咗') || val.includes('依家') || val.includes('哋'));
+    const hasChinese = /[\u4e00-\u9fff]/.test(val) && !hasCanto;
+    const hasScale = val.includes('scale') || val.includes('加速') || val.includes('leap') || val.includes('global');
+    const hasGreen = val.includes('green') || val.includes('绿色') || val.includes('綠色') || val.includes('energy') || val.includes('能源');
+    const hasBio = val.includes('bio') || val.includes('diagnostic') || val.includes('medical') || val.includes('生物');
+
+    // Determine best programme match
+    if (hasPrototype && !hasRevenue && !hasScale) {
+      const sector = hasAI ? 'AI/Hardware' : hasGreen ? 'Green Technology' : hasBio ? 'Biomedical' : 'Technology';
+      const teamNote = hasTeam ? ` with a team of ${hasTeam[1]}` : '';
+      response = hasCanto
+        ? `多謝你嘅分享！根據你嘅描述 — ${sector} 領域${teamNote}，已有 prototype — 我建議你申請 <strong>Incubation Programme</strong>。<br><br><strong>資助：</strong>最高 HKD 1,290,000<br><strong>期限：</strong>3 年<br><strong>辦公室：</strong>科學園免費工位 (每月 $12,500 租金資助)<br><br>即時資格檢查：<br>&#10003; 香港註冊科技公司<br>&#10003; 成立不超過5年<br>&#10003; 有 prototype/MVP<br>&#10003; 50%+ 研發人員<br><br><strong style="color:#00c9a7;">你睇落符合資格！</strong>全年接受申請。`
+        : hasChinese
+        ? `感谢分享！根据您的描述 — ${sector} 领域${teamNote}，已有原型产品 — 我推荐 <strong>Incubation Programme</strong>。<br><br><strong>资助：</strong>最高 HKD 1,290,000<br><strong>期限：</strong>3 年<br><strong>办公室：</strong>科学园免租工位<br><br>即时资格检查：<br>&#10003; 香港注册科技公司<br>&#10003; 成立不超过5年<br>&#10003; 有原型/MVP<br>&#10003; 50%+ 研发人员<br><br><strong style="color:#00c9a7;">看起来您符合资格！</strong>全年接受申请。`
+        : `Thanks for sharing! Based on your profile — ${sector} sector${teamNote}, with a working prototype — I recommend the <strong>Incubation Programme</strong>.<br><br><strong>Funding:</strong> Up to HKD 1,290,000<br><strong>Duration:</strong> 3 years<br><strong>Office:</strong> Subsidised space at Science Park (HKD 12,500/mo)<br><br>Quick eligibility check:<br>&#10003; HK-incorporated tech company<br>&#10003; Less than 5 years old<br>&#10003; Has prototype/MVP<br>&#10003; 50%+ R&D staff<br><br><strong style="color:#00c9a7;">You appear eligible!</strong> Applications open year-round.`;
+      options = hasCanto ? ['開始申請', '比較其他計劃', '了解更多'] : hasChinese ? ['开始申请', '比较其他项目', '了解更多'] : ['Start application', 'Compare programmes', 'Learn more'];
+    } else if (hasRevenue || hasScale) {
+      response = hasCanto
+        ? `你嘅公司已經有收入同客戶，可以考慮加速計劃：<br><br><strong>1. LEAP</strong> — 總值 HKD 470萬，包括120萬現金，5% 股權期權。支持大灣區及東盟拓展。<br><br><strong>2. Co-Acceleration</strong> — HKD 1,560萬股權投資，專注 Gen AI / IoT / 可持續發展。<br><br>你想了解邊個計劃多啲？`
+        : `You're generating revenue — you're ready for acceleration! Two strong options:<br><br><strong>1. LEAP</strong> — HKD 4.7M total value (HKD 1.2M cash), 5% equity option. GBA + ASEAN expansion.<br><br><strong>2. Co-Acceleration</strong> — HKD 15.6M equity investment, focused on Gen AI, IoT, Sustainability. 24-month PPP programme.<br><br>Which interests you more?`;
+      options = hasScale ? ['LEAP details', 'Co-Acceleration details', 'Compare both'] : ['Tell me about LEAP', 'Co-Acceleration info', 'Check eligibility'];
+    } else if (hasIdea) {
+      response = `The <strong>Ideation Programme</strong> is designed exactly for your stage! It provides:<br><br><strong>Funding:</strong> HKD 100,000 (equity-free, 3 milestone tranches)<br><strong>Duration:</strong> 1 year<br><strong>Training:</strong> Business modelling, pitching, HK startup ecosystem<br><strong>Mentorship:</strong> Industry expert guidance<br><br>You need: HKID holder, age 18+. You can apply as a team without a company — just incorporate within 2 weeks if approved.<br><br>Next window: <strong>May 2026</strong>.`;
+      options = ['Start Ideation application', 'Tell me more', 'Other programmes'];
+    } else {
+      response = hasCanto
+        ? `多謝你嘅分享！為咗幫你搵到最適合嘅計劃，可唔可以話畀我知：<br><br><strong>1)</strong> 你有冇產品或者 prototype？<br><strong>2)</strong> 你嘅團隊有幾多人？<br><strong>3)</strong> 有冇收入？<br><br>你亦可以直接講你嘅公司情況，我會自動分析。`
+        : hasChinese
+        ? `感谢您的分享！为了给您最好的推荐，能否告诉我：<br><br><strong>1)</strong> 是否有产品或原型？<br><strong>2)</strong> 团队规模多大？<br><strong>3)</strong> 是否已有收入？<br><br>您也可以直接描述公司情况，我会自动分析匹配。`
+        : `Thanks for sharing! To find the best programme, could you tell me:<br><br><strong>1)</strong> Do you have a product or prototype?<br><strong>2)</strong> How large is your team?<br><strong>3)</strong> Are you generating revenue?<br><br>Or just describe your startup naturally — I'll analyse and match automatically.`;
+      options = ['We have a prototype', 'Just an idea', 'Already have revenue'];
+    }
+
+    let optionsHtml = '<div class="chat-options" style="margin-top:10px;">';
+    options.forEach(o => {
+      optionsHtml += `<span class="chat-pill" onclick="handlePillClick(this, '${o}')">${o}</span>`;
+    });
+    optionsHtml += '</div>';
+
+    aiMsg.innerHTML = `<div class="sender">HKSTP Copilot</div>${response}${optionsHtml}`;
+    body.appendChild(aiMsg);
+    body.scrollTop = body.scrollHeight;
+  }, 1400);
+}
+
+function handlePillClick(el, text) {
+  const input = document.getElementById('hero-chat-input');
+  if (text.includes('Start') || text.includes('開始') || text.includes('开始')) {
+    showPage('apply');
+  } else if (text.includes('Compare') || text.includes('比較') || text.includes('比较') || text.includes('Other') || text.includes('View')) {
+    showPage('programmes');
+  } else {
+    input.value = text;
+    sendChat();
+  }
+}
+
+// Old floating panel JS removed — copilot is now unified with hero chat
+</script>
+
+</body>
+</html>
