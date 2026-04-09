@@ -34,13 +34,7 @@
       const tags = document.createElement("div");
       tags.className = "apply-doc-upload__tags";
       tags.setAttribute("data-doc-tags", "");
-      const pickBtn = document.createElement("button");
-      pickBtn.type = "button";
-      pickBtn.className = "btn-apply-primary apply-doc-upload__btn";
-      pickBtn.setAttribute("data-doc-pick", "");
-      pickBtn.textContent = "Select file";
       filled.appendChild(tags);
-      filled.appendChild(pickBtn);
       dropzone.insertBefore(filled, busy);
       stateFilled = filled;
       tagsRoot = tags;
@@ -220,6 +214,12 @@
       btn.addEventListener("click", () => {
         input.click();
       });
+    });
+
+    dropzone.addEventListener("click", (e) => {
+      if (e.target.closest(".apply-doc-tag__remove") || e.target.closest("[data-remove]")) return;
+      if (e.target.closest("[data-doc-pick]")) return;
+      input.click();
     });
 
     input.addEventListener("change", () => {
