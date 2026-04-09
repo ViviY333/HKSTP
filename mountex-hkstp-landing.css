@@ -306,6 +306,12 @@ main {
   flex-shrink: 0;
 }
 
+a.btn--primary.btn--header {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .btn--send {
   width: 39px;
   height: 38px;

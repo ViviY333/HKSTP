@@ -1,0 +1,211 @@
+/* Figma 591:16362 — 四步进度条（底轨 #e2e8f0 + 填充 #ffe4d3） */
+
+.apply-stepper-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 12px 28px 0;
+  box-sizing: border-box;
+}
+
+/* 横轨略下移，使与圆点中心对齐 */
+.apply-stepper-track {
+  position: relative;
+  top: 14px;
+  height: 2px;
+  margin: 0 auto -10px;
+  max-width: 704px;
+  width: 100%;
+  background: #e2e8f0;
+  border-radius: 1px;
+  z-index: 0;
+}
+
+.apply-stepper-track__fill {
+  height: 100%;
+  width: 37.5%;
+  background: #ffe4d3;
+  border-radius: 1px;
+  transition: width 0.3s ease;
+}
+
+.apply-stepper--four {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  max-width: 704px;
+  width: 100%;
+  margin: 0 auto 12px;
+  text-align: center;
+  align-items: start;
+  justify-items: center;
+}
+
+.apply-stepper__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.apply-stepper__glyph {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.apply-stepper__check {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  display: none;
+  object-fit: contain;
+  object-position: center;
+}
+
+.apply-stepper__disc {
+  position: absolute;
+  inset: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: #e2e8f0;
+  box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.35);
+}
+
+.apply-stepper__n {
+  font-family: var(--font-ui, "Inter", sans-serif);
+  font-size: 10.88px;
+  font-weight: 600;
+  line-height: 1;
+  color: #fff;
+}
+
+/* 待开始：默认浅灰圆 + 白字（无 SVG 的步骤） */
+.apply-stepper__item.is-pending .apply-stepper__disc {
+  background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%);
+}
+
+.apply-stepper__item.is-pending .apply-stepper__n {
+  color: #fff;
+}
+
+.apply-stepper__item.is-active .apply-stepper__check {
+  display: none;
+}
+
+.apply-stepper__item.is-active .apply-stepper__disc {
+  display: flex;
+  background: linear-gradient(180deg, var(--orange-grad-top, #f97316), var(--orange-grad-bot, #ea580c));
+  box-shadow: 0 0 0 1px rgba(253, 109, 14, 0.25);
+}
+
+.apply-stepper__item.is-active .apply-stepper__n {
+  color: #fff;
+}
+
+/* 已完成：对勾图 */
+.apply-stepper__item.is-done .apply-stepper__check {
+  display: block;
+}
+
+.apply-stepper__item.is-done .apply-stepper__disc {
+  display: none;
+}
+
+.apply-stepper__label {
+  font-family: var(--font-ui, "Inter", sans-serif);
+  font-size: 10.88px;
+  font-weight: 500;
+  color: #64748b;
+  line-height: 1.25;
+  max-width: 11ch;
+}
+
+.apply-stepper__item.is-active .apply-stepper__label {
+  font-weight: 600;
+  color: var(--orange-nav, #fd6d0e);
+}
+
+.apply-stepper__item.is-done .apply-stepper__label {
+  color: #64748b;
+}
+
+.apply-stepper__item.is-pending .apply-stepper__label {
+  color: #64748b;
+}
+
+/* Steps 3 & 4：矢量图在圆内（数字已在矢量图内） */
+.apply-stepper__item[data-visual-step="3"] .apply-stepper__disc-img,
+.apply-stepper__item[data-visual-step="4"] .apply-stepper__disc-img {
+  position: absolute;
+  inset: 0;
+  width: 36px;
+  height: 36px;
+  display: none;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Step 3：待处理 = 灰色 3.svg，进行中 = 橙色 3-active.svg（与步骤 2 活跃态一致） */
+.apply-stepper__item[data-visual-step="3"].is-pending .apply-stepper__disc-img--pending {
+  display: block;
+}
+
+.apply-stepper__item[data-visual-step="3"].is-pending .apply-stepper__disc-img--active {
+  display: none;
+}
+
+.apply-stepper__item[data-visual-step="3"].is-active .apply-stepper__disc-img--pending {
+  display: none;
+}
+
+.apply-stepper__item[data-visual-step="3"].is-active .apply-stepper__disc-img--active {
+  display: block;
+}
+
+/* Step 4：待处理 = 4.svg，进行中 = 4on.svg */
+.apply-stepper__item[data-visual-step="4"].is-pending .apply-stepper__disc-img--pending {
+  display: block;
+}
+
+.apply-stepper__item[data-visual-step="4"].is-pending .apply-stepper__disc-img--active {
+  display: none;
+}
+
+.apply-stepper__item[data-visual-step="4"].is-active .apply-stepper__disc-img--pending {
+  display: none;
+}
+
+.apply-stepper__item[data-visual-step="4"].is-active .apply-stepper__disc-img--active {
+  display: block;
+}
+
+.apply-stepper__item[data-visual-step="3"].is-pending .apply-stepper__disc,
+.apply-stepper__item[data-visual-step="4"].is-pending .apply-stepper__disc {
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Steps 3 & 4 进行中：矢量图填满圆区 */
+.apply-stepper__item[data-visual-step="3"].is-active .apply-stepper__disc,
+.apply-stepper__item[data-visual-step="4"].is-active .apply-stepper__disc {
+  background: transparent;
+  box-shadow: none;
+}

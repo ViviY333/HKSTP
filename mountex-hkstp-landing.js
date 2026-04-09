@@ -30,8 +30,11 @@
     },
   };
 
+  const APPLY_HREF = "applied.html";
+
   const PROGRAMMES = [
     {
+      id: "ideation",
       title: "创意启发计划",
       titleAccent: true,
       subtitle: "创业前期 | 零股权种子资金",
@@ -45,6 +48,7 @@
       cta: { label: "申请", variant: "orange" },
     },
     {
+      id: "incubation",
       title: "培育计划",
       subtitle: "早期阶段 | 三年深度支援",
       desc: "从技术开发、市场探索到商业发展，协助你把首批方案推进至具商业化准备。",
@@ -57,6 +61,7 @@
       cta: { label: "申请", variant: "dark" },
     },
     {
+      id: "codev",
       title: "共创发展计划",
       subtitle: "伙伴驱动 | 共创意念与培育",
       desc: "与龙头企业伙伴共创，提供上市支持及专属导师，设「共创意念」或「共创培育」路径。",
@@ -69,6 +74,7 @@
       cta: { label: "申请", variant: "dark" },
     },
     {
+      id: "leap",
       title: "LEAP 加速计划",
       subtitle: "成长阶段 | 全球拓展",
       desc: "以约 470 万港元计划价值迈向国际，对接逾 70 家企业伙伴，并获得大湾区／东盟市场拓展支援。",
@@ -81,6 +87,7 @@
       cta: { label: "申请", variant: "dark" },
     },
     {
+      id: "coaccel",
       title: "协创加速计划",
       subtitle: "深科技 | 公私合营基金",
       desc: "香港首个 PPP 创科基金，与顶级有限合伙人共同投资生成式人工智能、智联系统及可持续发展等领域。",
@@ -93,6 +100,7 @@
       cta: { label: "申请", variant: "dark" },
     },
     {
+      id: "elite",
       title: "精英计划",
       subtitle: "规模化 | 邀请制 | 上市前",
       desc: "面向成熟初创、剑指全球市场的专属计划，研发开支最高可获约一半资助，并附 IPO／并购筹备支援。",
@@ -121,13 +129,14 @@
         return `<div class="prog-metric${wide}"><p class="prog-metric__label">${m.label}</p><p class="${valClass}">${m.value}</p></div>`;
       })
       .join("");
+    const applyUrl = p.id ? `${APPLY_HREF}?programme=${encodeURIComponent(p.id)}` : APPLY_HREF;
     let btnHtml = "";
     if (p.cta.variant === "orange") {
-      btnHtml = `<button type="button" class="btn btn--primary" style="padding:8px 20px;font-size:12.16px;font-weight:600">${p.cta.label}</button>`;
+      btnHtml = `<a class="btn btn--primary" style="padding:8px 20px;font-size:12.16px;font-weight:600;display:inline-flex;align-items:center;justify-content:center" href="${applyUrl}">${p.cta.label}</a>`;
     } else if (p.cta.variant === "dark") {
-      btnHtml = `<button type="button" class="btn btn--dark">${p.cta.label}</button>`;
+      btnHtml = `<a class="btn btn--dark" href="${applyUrl}">${p.cta.label}</a>`;
     } else {
-      btnHtml = `<button type="button" class="btn btn--muted">${p.cta.label}</button>`;
+      btnHtml = `<button type="button" class="btn btn--muted" disabled>${p.cta.label}</button>`;
     }
     return `
       <article class="prog-card">

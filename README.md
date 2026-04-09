@@ -32,6 +32,8 @@ python3 -m http.server 8765 --bind 127.0.0.1
 | `mountex-hkstp-landing.css` | 主样式 |
 | `mountex-hkstp-landing-sections.css` | 区块与页脚等 |
 | `mountex-hkstp-landing.js` | 交互与计划卡片 |
+| `applied.html` | 申请流程页（落地页 **Apply** / **APPLY NOW** 跳转至此） |
+| `mountex-hkstp-apply*.css` / `mountex-hkstp-apply*.js` | 申请页样式与交互 |
 | `logo.png` | 页头/页脚 Logo |
 | `unicornstudio_hero_remix.json` | Unicorn Studio 工程（与 HTML 内嵌同步维护时可更新） |
 

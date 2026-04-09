@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Programme Application — HKSTP Unified Portal (Mountex)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="mountex-hkstp-apply.css" />
+  <link rel="stylesheet" href="mountex-hkstp-apply-stepper.css" />
+  <link rel="stylesheet" href="mountex-hkstp-apply-sections.css" />
+  <link rel="stylesheet" href="mountex-hkstp-apply-doc-upload.css" />
+</head>
+<body>
+  <!-- Figma MCP: node 534:15331 Company Info frame; 591:16262 Proposal; 597:16434 Review -->
+  <div class="apply-shell">
+    <header class="apply-topnav">
+      <div class="apply-topnav__inner">
+        <a class="apply-topnav__logo" href="mountex-hkstp-landing.html" aria-label="HKSTP">
+          <img src="logo.png" alt="" width="118" height="41" />
+        </a>
+        <nav class="apply-topnav__links" aria-label="Primary navigation">
+          <a class="apply-topnav__link" href="mountex-hkstp-landing.html">Home</a>
+          <a class="apply-topnav__link" href="mountex-hkstp-landing.html#programmes">Programmes</a>
+          <a class="apply-topnav__link is-active" href="applied.html" aria-current="page">Apply</a>
+          <a class="apply-topnav__link" href="#">Dashboard</a>
+          <a class="apply-topnav__link" href="#">CRM (Staff)</a>
+        </nav>
+        <div class="apply-topnav__actions">
+          <div class="apply-topnav__avatar" aria-hidden="true" title="Account">JC</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="apply-main">
+      <article class="apply-card" data-apply-card>
+        <div class="apply-stepper-wrap" data-stepper-wrap>
+          <div class="apply-stepper-track" aria-hidden="true">
+            <div class="apply-stepper-track__fill" data-stepper-fill></div>
+          </div>
+          <!-- Figma 591:16362 — four steps; AI Match done, form progress from Company Info -->
+          <div class="apply-stepper apply-stepper--four" aria-label="Application steps">
+            <div class="apply-stepper__item is-done" data-visual-step="1">
+              <div class="apply-stepper__glyph">
+                <img class="apply-stepper__check" src="https://www.figma.com/api/mcp/asset/b304fdd9-76d5-4668-98fa-033453fa232d" alt="" width="36" height="36" loading="lazy" />
+                <span class="apply-stepper__disc" aria-hidden="true"><span class="apply-stepper__n">1</span></span>
+              </div>
+              <span class="apply-stepper__label">AI Match</span>
+            </div>
+            <div class="apply-stepper__item is-active" data-visual-step="2">
+              <div class="apply-stepper__glyph">
+                <img class="apply-stepper__check" src="https://www.figma.com/api/mcp/asset/b304fdd9-76d5-4668-98fa-033453fa232d" alt="" width="36" height="36" loading="lazy" />
+                <span class="apply-stepper__disc" aria-hidden="true">
+                  <img class="apply-stepper__disc-img" src="2.svg" alt="" width="36" height="36" loading="lazy" />
+                </span>
+              </div>
+              <span class="apply-stepper__label">Company Info</span>
+            </div>
+            <div class="apply-stepper__item is-pending" data-visual-step="3">
+              <div class="apply-stepper__glyph">
+                <img class="apply-stepper__check" src="https://www.figma.com/api/mcp/asset/b304fdd9-76d5-4668-98fa-033453fa232d" alt="" width="36" height="36" loading="lazy" />
+                <span class="apply-stepper__disc" aria-hidden="true">
+                  <img class="apply-stepper__disc-img apply-stepper__disc-img--pending" src="3.svg" alt="" width="36" height="36" loading="lazy" />
+                  <img class="apply-stepper__disc-img apply-stepper__disc-img--active" src="3-active.svg" alt="" width="36" height="36" loading="lazy" />
+                </span>
+              </div>
+              <span class="apply-stepper__label">Proposal</span>
+            </div>
+            <div class="apply-stepper__item is-pending" data-visual-step="4">
+              <div class="apply-stepper__glyph">
+                <img class="apply-stepper__check" src="https://www.figma.com/api/mcp/asset/b304fdd9-76d5-4668-98fa-033453fa232d" alt="" width="36" height="36" loading="lazy" />
+                <span class="apply-stepper__disc" aria-hidden="true">
+                  <img class="apply-stepper__disc-img apply-stepper__disc-img--pending" src="4.svg" alt="" width="36" height="36" loading="lazy" />
+                  <img class="apply-stepper__disc-img apply-stepper__disc-img--active" src="4on.svg" alt="" width="36" height="36" loading="lazy" />
+                </span>
+              </div>
+              <span class="apply-stepper__label">Review</span>
+            </div>
+          </div>
+        </div>
+
+        <form class="apply-form" data-apply-form novalidate>
+          <input type="hidden" name="programme" id="programme" value="incubation" />
+          <input type="hidden" name="applicant_type" id="applicant_type" value="company" />
+
+          <!-- Step 1: Company Info — Figma 534:15331 -->
+          <div class="apply-panel" data-step-panel="1">
+            <div class="apply-copilot-banner">
+              <div class="apply-copilot-banner__icon" aria-hidden="true">
+                <img src="AI%20button.png" alt="" width="44" height="44" />
+              </div>
+              <div class="apply-copilot-banner__body">
+                <p class="apply-copilot-banner__title" data-copilot-title></p>
+                <p class="apply-copilot-banner__text" data-copilot-text></p>
+              </div>
+              <span class="apply-copilot-banner__badge" data-copilot-badge>✓ Eligible</span>
+            </div>
+
+            <!-- Document extract upload — Figma 621:16979 (empty) / 628:17070 (with tags) -->
+            <div class="apply-doc-upload" data-doc-upload>
+              <input
+                type="file"
+                id="company_doc_extract"
+                class="apply-sr-only"
+                data-doc-input
+                multiple
+                accept=".pdf,.doc,.docx,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"
+              />
+              <div
+                class="apply-doc-upload__card"
+                data-doc-dropzone
+                tabindex="0"
+                role="group"
+                aria-label="Upload company documents to extract information"
+              >
+                <div class="apply-doc-upload__state apply-doc-upload__state--empty" data-doc-state-empty>
+                  <div class="apply-doc-upload__icon" aria-hidden="true">
+                    <img src="https://www.figma.com/api/mcp/asset/9b58b90d-9aad-4511-9ea8-02b0caf819a6" alt="" width="20" height="20" loading="lazy" />
+                  </div>
+                  <p class="apply-doc-upload__title">Upload documents to extract texts</p>
+                  <p class="apply-doc-upload__types">supported file types: pdf, doc, docx, txt</p>
+                  <button type="button" class="btn-apply-primary apply-doc-upload__btn" data-doc-pick>Select file</button>
+                </div>
+                <p class="apply-doc-upload__busy" data-doc-busy hidden>Extracting information from your document…</p>
+              </div>
+            </div>
+
+            <div class="apply-form-card">
+              <h2 class="apply-form-card__title">Company Information</h2>
+              <p class="apply-form-card__intro">
+                Fields marked with <span class="apply-ai-tag">AI Pre-filled</span> come from your Copilot chat or from an uploaded company document. They start with a warm highlight; once you edit them, they look like standard fields.
+              </p>
+
+              <div class="apply-field">
+                <label for="company_name">Company Name</label>
+                <input class="apply-input" type="text" id="company_name" name="company_name" autocomplete="organization" required placeholder="NovaTech Solutions Ltd" />
+              </div>
+              <div class="apply-row">
+                <div class="apply-field apply-field--ai-prefilled">
+                  <label for="br_number">Business Registration No. <span class="apply-ai-tag apply-ai-tag--inline">AI Pre-filled</span></label>
+                  <input
+                    class="apply-input apply-input--ai"
+                    type="text"
+                    id="br_number"
+                    name="br_number"
+                    autocomplete="off"
+                    value="12345678-000-01-19-3"
+                    title="Pre-filled from Copilot — edit if needed"
+                  />
+                </div>
+                <div class="apply-field apply-field--ai-prefilled">
+                  <label for="incorporation_date">Incorporation Date <span class="apply-ai-tag apply-ai-tag--inline">AI Pre-filled</span></label>
+                  <input
+                    class="apply-input apply-input--ai"
+                    type="date"
+                    id="incorporation_date"
+                    name="incorporation_date"
+                    value="2022-06-15"
+                    title="Pre-filled from Copilot — edit if needed"
+                  />
+                </div>
+              </div>
+              <div class="apply-row">
+                <div class="apply-field">
+                  <label for="technology_sector">Technology Sector</label>
+                  <select class="apply-select" id="technology_sector" name="technology_sector" required>
+                    <option value="">Select…</option>
+                    <option value="ai">Artificial Intelligence</option>
+                    <option value="fintech">FinTech</option>
+                    <option value="biomed">Biomedical</option>
+                    <option value="cleantech">CleanTech</option>
+                    <option value="enterprise">Enterprise</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="apply-field apply-field--ai-prefilled">
+                  <label for="team_size">Full-Time Team Size <span class="apply-ai-tag apply-ai-tag--inline">AI Pre-filled</span></label>
+                  <input
+                    class="apply-input apply-input--ai"
+                    type="number"
+                    id="team_size"
+                    name="team_size"
+                    min="1"
+                    required
+                    value="4"
+                    title="Pre-filled from Copilot — edit if needed"
+                  />
+                </div>
+              </div>
+              <div class="apply-row">
+                <div class="apply-field">
+                  <label for="rd_percent">R&amp;D Staff Percentage</label>
+                  <input class="apply-input" type="text" id="rd_percent" name="rd_percent" placeholder="75%" />
+                </div>
+                <div class="apply-field">
+                  <label for="ownership_note">Founding Team Share Ownership (%)</label>
+                  <input class="apply-input" type="text" id="ownership_note" name="ownership_note" placeholder="100% — 2 co-founders" />
+                </div>
+              </div>
+            </div>
+
+            <div class="apply-form-card apply-form-card--team">
+              <h2 class="apply-form-card__title">Team Members</h2>
+              <p class="apply-form-card__intro apply-form-card__intro--only">
+                Add your founding team. Data carries forward to future programme applications — enter once, use everywhere.
+              </p>
+
+              <div class="apply-team-row">
+                <div class="apply-team-avatar apply-team-avatar--neutral" data-avatar-primary>JC</div>
+                <div class="apply-team-row__fields">
+                  <div class="apply-team-row__line">
+                    <input class="apply-input apply-input--bare" type="text" id="contact_name" name="contact_name" autocomplete="name" required placeholder="James Chen" />
+                  </div>
+                  <div class="apply-team-row__meta">
+                    <input class="apply-input apply-input--bare apply-input--inline" type="text" id="contact_role" name="contact_role" placeholder="CEO &amp; Co-founder" required />
+                    <span class="apply-team-sep">|</span>
+                    <input class="apply-input apply-input--bare apply-input--inline" type="email" id="email" name="email" autocomplete="email" placeholder="james@novatech.hk" required />
+                  </div>
+                </div>
+                <span class="apply-team-pill">Primary Contact</span>
+              </div>
+
+              <div class="apply-team-row apply-team-row--second">
+                <div class="apply-team-avatar apply-team-avatar--brand">LW</div>
+                <div class="apply-team-row__fields">
+                  <input class="apply-input apply-input--bare" type="text" id="member2_name" name="member2_name" placeholder="Lisa Wong" />
+                  <div class="apply-team-row__meta">
+                    <input class="apply-input apply-input--bare apply-input--inline" type="text" id="member2_role" name="member2_role" placeholder="CTO &amp; Co-founder" />
+                    <span class="apply-team-sep">|</span>
+                    <input class="apply-input apply-input--bare apply-input--inline" type="email" id="member2_email" name="member2_email" placeholder="lisa@novatech.hk" />
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" class="apply-add-member" disabled aria-disabled="true">+ Add Team Member</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Proposal — Figma 591:16262 -->
+          <div class="apply-panel" data-step-panel="2" hidden>
+            <div class="apply-copilot-banner apply-copilot-banner--compact">
+              <div class="apply-copilot-banner__icon" aria-hidden="true">
+                <img src="AI%20button.png" alt="" width="44" height="44" />
+              </div>
+              <div class="apply-copilot-banner__body">
+                <p class="apply-copilot-banner__title" data-copilot-title></p>
+                <p class="apply-copilot-banner__text" data-copilot-text></p>
+              </div>
+              <span class="apply-copilot-banner__badge" data-copilot-badge>✓ Eligible</span>
+            </div>
+
+            <div class="apply-form-card">
+              <h2 class="apply-form-card__title">Project Overview</h2>
+              <p class="apply-form-card__intro">Describe your innovation, technology, and market opportunity.</p>
+              <div class="apply-field">
+                <label for="project_title">Project Title</label>
+                <input class="apply-input" type="text" id="project_title" name="project_title" required placeholder="Enter a clear, descriptive title for your project" />
+              </div>
+              <div class="apply-field">
+                <label for="project_summary">Project Summary</label>
+                <textarea class="apply-textarea" id="project_summary" name="project_summary" placeholder="Provide a concise summary of your innovation and its key benefits (300 words max)" required></textarea>
+              </div>
+              <div class="apply-field">
+                <label for="tech_description">Technology Description</label>
+                <textarea class="apply-textarea" id="tech_description" name="tech_description" placeholder="Explain the core technology, innovation, and how it differs from existing solutions" required></textarea>
+              </div>
+            </div>
+
+            <div class="apply-form-card">
+              <h2 class="apply-form-card__title apply-section-title--spaced">Market &amp; Impact</h2>
+              <p class="apply-form-card__intro">Define your target market and expected impact.</p>
+              <div class="apply-row">
+                <div class="apply-field">
+                  <label for="target_market">Target Market</label>
+                  <input class="apply-input" type="text" id="target_market" name="target_market" placeholder="e.g. Healthcare providers in Asia Pacific" required />
+                </div>
+                <div class="apply-field">
+                  <label for="market_size_hkd">Market Size (HKD)</label>
+                  <input class="apply-input" type="text" id="market_size_hkd" name="market_size_hkd" placeholder="Estimated total addressable market" />
+                </div>
+              </div>
+              <div class="apply-field">
+                <label for="problem_statement">Problem Statement</label>
+                <textarea class="apply-textarea" id="problem_statement" name="problem_statement" placeholder="What specific problem does your solution address?" required></textarea>
+              </div>
+              <div class="apply-field">
+                <label for="competitive_advantage">Competitive Advantage</label>
+                <textarea class="apply-textarea" id="competitive_advantage" name="competitive_advantage" placeholder="How does your solution stand out from competitors?" required></textarea>
+              </div>
+            </div>
+
+            <div class="apply-form-card">
+              <h2 class="apply-form-card__title apply-section-title--spaced">Development Plan</h2>
+              <p class="apply-form-card__intro">Outline your development roadmap and resource requirements.</p>
+              <div class="apply-row">
+                <div class="apply-field">
+                  <label for="current_stage">Current Stage</label>
+                  <select class="apply-select" id="current_stage" name="current_stage" required>
+                    <option value="">Select…</option>
+                    <option value="idea">Idea</option>
+                    <option value="prototype">Prototype</option>
+                    <option value="mvp">MVP</option>
+                    <option value="working">Working Prototype</option>
+                    <option value="scaling">Scaling</option>
+                  </select>
+                </div>
+                <div class="apply-field">
+                  <label for="expected_launch_date">Expected Launch Date</label>
+                  <input class="apply-input" type="date" id="expected_launch_date" name="expected_launch_date" />
+                </div>
+              </div>
+              <div class="apply-field">
+                <label for="milestones_12m">12-Month Milestones</label>
+                <textarea class="apply-textarea" id="milestones_12m" name="milestones_12m" placeholder="List key milestones you plan to achieve in the next 12 months" required></textarea>
+              </div>
+              <div class="apply-field">
+                <label for="funding_required_hkd">Funding Required (HKD)</label>
+                <input class="apply-input" type="text" id="funding_required_hkd" name="funding_required_hkd" placeholder="Total funding needed" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Review — Figma 597:16434 -->
+          <div class="apply-panel" data-step-panel="3" hidden>
+            <div
+              class="apply-review-hero"
+              role="region"
+              aria-labelledby="apply-review-hero-heading"
+            >
+              <h2 id="apply-review-hero-heading" class="apply-sr-only">Review Your Application</h2>
+              <p class="apply-sr-only">
+                Please review all information before submitting. You can make changes if needed.
+              </p>
+            </div>
+
+            <div class="apply-review-host" data-review></div>
+
+            <div class="apply-reco apply-reco--figma" data-programme-reco>
+              <div class="apply-reco__icon" aria-hidden="true">
+                <img src="AI%20button.png" alt="" width="44" height="44" />
+              </div>
+              <div>
+                <p class="apply-reco__label">Recommended Programme</p>
+                <p class="apply-reco__title" data-reco-title>—</p>
+                <p class="apply-reco__sub">Based on your application, this programme offers the best match for your needs.</p>
+                <ul class="apply-reco__metrics" data-reco-bullets></ul>
+              </div>
+            </div>
+
+            <div class="apply-field">
+              <label class="apply-check">
+                <input type="checkbox" name="declaration" value="1" />
+                <span>I confirm that all information provided is accurate and complete. By submitting this application, you agree to the terms and conditions and HKSTP’s use of your data per the privacy policy.</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="apply-actions">
+            <button type="button" class="btn-apply-secondary" data-btn-prev hidden>Back</button>
+            <div class="apply-actions__spacer"></div>
+            <button type="button" class="btn-apply-primary" data-btn-next>Save &amp; Continue →</button>
+            <button type="submit" class="btn-apply-primary" data-btn-submit hidden>Submit Application</button>
+          </div>
+        </form>
+      </article>
+
+      <div class="apply-card apply-success-card" data-apply-success hidden>
+        <div class="apply-success">
+          <h2>We've received your application</h2>
+          <p>This is a prototype: your data is not sent to a server. In production, this would connect to workflows and send a confirmation email.</p>
+          <a class="btn-apply-primary" href="mountex-hkstp-landing.html">Back to home</a>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="mountex-hkstp-apply-doc-upload.js"></script>
+  <script src="mountex-hkstp-apply.js"></script>
+</body>
+</html>
